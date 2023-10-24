@@ -17,33 +17,23 @@ import java.util.HashMap;
 @TeleOp(name = "manualDrive", group = "manual")
 public class manualDrive extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor leftMotor;
-    DcMotor rightMotor;
-
+    private DriveTrain driveTrain = new DriveTrain();
     HashMap<Integer, Double>speedMap = new HashMap<Integer, Double>();
     int i = 0;
 
-
     @Override
     public void init(){
-        leftMotor = hardwareMap.get(DcMotor.class, "leftMotor");
-        rightMotor = hardwareMap.get(DcMotor.class, "rightMotor");
-
         speedMap.put(0, 0.5);
         speedMap.put(1, 0.2);
-        speedMap.put(2, 1.0);
+        speedMap.put(2, 0.7);
 
-
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightMotor.setDirection(DcMotor.Direction.FORWARD);
+        driveTrain.init(hardwareMap);
 
         telemetry.addData("Status", "Initialization is a success");
     }
 
     @Override
     public void loop() {
-        telemetry.addData("Status", "Running");
-
         // Power sent to wheels, affected by joysticks
         double leftPower;
         double rightPower;
@@ -51,7 +41,7 @@ public class manualDrive extends OpMode {
         double min = speedMap.get(i); //maximum/minimum power sent to wheels
         double max = speedMap.get(i);
 
-        if(gamepad1.left_stick_button){
+        if(gamepad1.left_stick_button){ //Shift the maximum, minimum speeds
             i = switchSpeed(i);
         }
 
@@ -62,18 +52,10 @@ public class manualDrive extends OpMode {
         leftPower    = Range.clip(drive + turn, min, max) ;
         rightPower   = Range.clip(drive - turn, min, max) ;
 
-        // Tank Mode uses one stick to control each wheel.
-        // - This requires no math, but it is hard to drive forward slowly and keep straight.
-//        leftPower  = -gamepad1.left_stick_y ;
-//        rightPower = -gamepad1.right_stick_y ;
-
-        // Send calculated power to wheels
-        leftMotor.setPower(leftPower);
-        rightMotor.setPower(rightPower);
+        // Send calculated power to drive train
+        driveTrain.move(leftPower, rightPower);
 
         // Show the elapsed game time and wheel power.
-        telemetry.addData("Gamepad1", "RT Value: " + gamepad1.right_trigger);
-
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }

@@ -40,6 +40,8 @@ public class cameraTest extends LinearOpMode {
         waitForStart();
 
         while(!isStopRequested() && opModeIsActive()){
+            visionPortal.resumeStreaming();
+            visionPortal.resumeLiveView();
             if(aprilTagProcessor.getDetections().size() > 0 ){
                 AprilTagDetection tag = aprilTagProcessor.getDetections().get(0);
                 telemetry.addData("id", tag.id);
