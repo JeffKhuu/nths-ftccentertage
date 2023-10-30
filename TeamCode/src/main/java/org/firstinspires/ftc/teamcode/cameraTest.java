@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -10,42 +12,44 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 
 import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.function.Consumer;
+import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
+import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.firstinspires.ftc.teamcode.concepts.VisionPortalStreamingOpMode;
+import org.firstinspires.ftc.teamcode.systems.AprilTagDetector;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.opencv.core.Mat;
+
+import java.util.List;
+import java.util.Locale;
 
 
-@TeleOp(name = "cameraTest")
-public class cameraTest extends LinearOpMode {
+@TeleOp(name = "DetectAprilTag", group = "Vision")
+public class cameraTest extends OpMode {
+    AprilTagDetector detector = new AprilTagDetector(this);;
 
     @Override
-    public void runOpMode() throws InterruptedException {
-        //FtcDashboard dashboard = FtcDashboard.getInstance();
-        //Telemetry telemetry = dashboard.getTelemetry();
-        AprilTagProcessor aprilTagProcessor = new AprilTagProcessor.Builder()
-                .setDrawAxes(true)
-                .setDrawCubeProjection(true)
-                .setDrawTagID(true)
-                .setDrawTagOutline(true)
-                .build();;
-        VisionPortal visionPortal = new VisionPortal.Builder()
-                .addProcessor(aprilTagProcessor)
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                .setCameraResolution(new Size(640, 480))
-                .enableLiveView(true)
-                .build();
+    public void init() {
+        final VisionPortalStreamingOpMode.CameraStreamProcessor processor = new VisionPortalStreamingOpMode.CameraStreamProcessor();
+        detector.init();
+    }
+    @Override
+    public void loop() {
+        List<AprilTagDetection> detections = detector.getDetections();
+        telemetry.addData("# AprilTags Detected", detections.size());
 
-        waitForStart();
-
-        while(!isStopRequested() && opModeIsActive()){
-            visionPortal.resumeStreaming();
-            visionPortal.resumeLiveView();
-            if(aprilTagProcessor.getDetections().size() > 0 ){
-                AprilTagDetection tag = aprilTagProcessor.getDetections().get(0);
-                telemetry.addData("id", tag.id);
-            }
+        for(AprilTagDetection detection : detections){
+            telemetry.addLine(String.format(Locale.ENGLISH, "\n==== (ID %d) %s", detection.id, detection.metadata.name));
+            telemetry.addLine(String.format(Locale.ENGLISH, "PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+            telemetry.addData("X", detection.ftcPose.x);
         }
     }
 }

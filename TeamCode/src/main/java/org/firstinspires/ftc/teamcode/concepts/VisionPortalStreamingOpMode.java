@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.concepts;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -54,11 +55,10 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
 
         new VisionPortal.Builder()
                 .addProcessor(processor)
-                .setCamera(BuiltinCameraDirection.BACK)
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
         FtcDashboard.getInstance().startCameraStream(processor, 0);
-
         waitForStart();
 
         while (opModeIsActive()) {
