@@ -44,22 +44,21 @@ public class DriveTrain {
         }
 
         // Use existing function to drive both wheels.
-        setDrivePower(left, right);
+        setDrivePower(left * speedArr[selectedSpeed], right * speedArr[selectedSpeed]);
     }
 
     public void setDrivePower(double leftWheel, double rightWheel) {
         // Output the values to the motor drives.
-        leftMotor.setPower(leftWheel * speedArr[selectedSpeed]); //Multiplies power of the left wheel by an amt. (Default: 70%)
-        rightMotor.setPower(rightWheel * speedArr[selectedSpeed]);
+        leftMotor.setPower(leftWheel); //Multiplies power of the left wheel by an amt. (Default: 70%)
+        rightMotor.setPower(rightWheel);
         opMode.telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftWheel, rightWheel);
     }
 
     public void switchSpeed(){
-        if(selectedSpeed >= speedArr.length){
-            //Loop back to the original speed
-            selectedSpeed = 0;
-        }else{
+        if(selectedSpeed < speedArr.length-1){
             selectedSpeed++;
+        }else{
+            selectedSpeed = 0;//Loop back to the original speed
         }
     }
 

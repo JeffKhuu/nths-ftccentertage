@@ -10,12 +10,13 @@ public class RobotHardware {
     OpMode opMode = null;
     private DcMotor armMotor = null;
     private Servo leftHand = null;
-    private Servo   rightHand = null;
+    private Servo rightHand = null;
+    private Servo wristServo = null;
 
     public static final double MID_SERVO       =  0.5 ;
     public static final double HAND_SPEED      =  0.02 ;  // sets rate to move servo
-    public static final double ARM_UP_POWER    =  0.45 ;
-    public static final double ARM_DOWN_POWER  = -0.45 ;
+    public static final double ARM_UP_POWER    =  0.75 ;
+    public static final double ARM_DOWN_POWER  = -0.75 ;
 
     public RobotHardware (OpMode opmode) {
         opMode = opmode;
@@ -23,23 +24,46 @@ public class RobotHardware {
 
     public void init(){
         leftHand = opMode.hardwareMap.get(Servo.class, "leftHand");
+        leftHand.setDirection(Servo.Direction.REVERSE);
+
         rightHand = opMode.hardwareMap.get(Servo.class, "rightHand");
+        wristServo = opMode.hardwareMap.get(Servo.class, "wristServo");
 
         armMotor = opMode.hardwareMap.get(DcMotor.class, "motorArm");
 
-        leftHand.setPosition(MID_SERVO);
-        rightHand.setPosition(MID_SERVO);
+       leftHand.setPosition(0);
+       rightHand.setPosition(0);
 
-        opMode.telemetry.addData("RobotHardware", "Hardware Initialized");
+       wristServo.setPosition(0);
+
+       opMode.telemetry.addData("RobotHardware", "Hardware Initialized");
     }
 
     public void setArmPower(double power) {
         armMotor.setPower(power);
     }
 
-    public void setHandPositions(double offset) {
-        offset = Range.clip(offset, -0.5, 0.5);
-        leftHand.setPosition(MID_SERVO + offset);
-        rightHand.setPosition(MID_SERVO - offset);
+    public void setHandPositions(double position) {
+        leftHand.setPosition(position);
+        rightHand.setPosition(position);
+    }
+
+    public void setHandPositions2() { //0.3, 0 RESTING POS. 0, 0.3 ENGAGED POSITION
+        leftHand.setPosition(0);
+        rightHand.setPosition(0.3);
+    }
+
+    public void setHandPositions3() { //0.3, 0 RESTING POS. 0, 0.3 ENGAGED POSITION
+        leftHand.setPosition(0.3);
+        rightHand.setPosition(0);
+    }
+
+    public void setWristPosition(double position){
+        wristServo.setPosition(wristServo.getPosition() + position);
+    }
+
+    public void servoTelemetry(){
+        opMode.telemetry.addData("LEFT HAND POSITION", leftHand.getPosition());
+        opMode.telemetry.addData("RIGHT HAND POSITION", rightHand.getPosition());
     }
 }
