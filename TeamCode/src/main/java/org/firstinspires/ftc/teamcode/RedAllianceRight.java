@@ -72,10 +72,10 @@ public class RedAllianceRight extends OpMode {
             telemetry.update();
         }
 
-        // Step 3:  Drive forward for 3 Second
+        // Step 3:  Drive forward for 6 Second
         driveTrain.setDrivePower(FORWARD_SPEED, FORWARD_SPEED);
         runtime.reset();
-        while ((runtime.seconds() < 3.0)) {
+        while ((runtime.seconds() < 6.0)) {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
