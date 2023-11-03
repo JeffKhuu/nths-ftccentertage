@@ -53,9 +53,19 @@ public class RobotHardware {
 
 
 
-    public void setWristPosition(double position){
-        wristServo.setPosition(wristServo.getPosition() + position);
+    public void setWristPosition(double position) {
+        wristServo.setPosition(position);
     }
+
+    public double getWristPosition() {
+
+
+
+        return wristServo.getPosition();
+    }
+
+
+
 
     public void servoTelemetry(){
         opMode.telemetry.addData("LEFT HAND POSITION", leftHand.getPosition());
@@ -63,4 +73,7 @@ public class RobotHardware {
         opMode.telemetry.addData("WRIST POSITION", wristServo.getPosition());
 
     }
+
+
+
 }
