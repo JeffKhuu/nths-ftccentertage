@@ -23,10 +23,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    lintOptions {
+    namespace 'com.acmerobotics.dashboard'
+    lint {
         abortOnError false
     }
+
 }
 
 node {
