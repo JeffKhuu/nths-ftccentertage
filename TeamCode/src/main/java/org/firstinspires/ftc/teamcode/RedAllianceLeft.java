@@ -35,7 +35,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.systems.DriveTrain;
 
-@Autonomous(name="Auto: Blue Alliance Left", group="Autonomous")
+@Autonomous(name="Auto:Alliance Left", group="Autonomous")
 public class RedAllianceLeft extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

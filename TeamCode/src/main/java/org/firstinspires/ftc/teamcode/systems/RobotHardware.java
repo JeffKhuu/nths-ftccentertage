@@ -11,7 +11,7 @@ public class RobotHardware {
     private DcMotor armMotor = null;
     private Servo leftHand = null;
     private Servo rightHand = null;
-    private Servo wristServo = null;
+    public Servo wristServo = null;
 
     public static final double MID_SERVO       =  0.5 ;
     public static final double HAND_SPEED      =  0.02 ;  // sets rate to move servo
@@ -48,15 +48,9 @@ public class RobotHardware {
         rightHand.setPosition(position);
     }
 
-    public void setHandPositions2() { //0.3, 0 RESTING POS. 0, 0.3 ENGAGED POSITION
-        leftHand.setPosition(0);
-        rightHand.setPosition(0.3);
-    }
 
-    public void setHandPositions3() { //0.3, 0 RESTING POS. 0, 0.3 ENGAGED POSITION
-        leftHand.setPosition(0.3);
-        rightHand.setPosition(0);
-    }
+
+
 
     public void setWristPosition(double position){
         wristServo.setPosition(wristServo.getPosition() + position);

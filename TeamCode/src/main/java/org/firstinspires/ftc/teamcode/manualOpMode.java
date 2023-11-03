@@ -54,14 +54,35 @@ public class manualOpMode extends OpMode {
                   RT (Hold): Disengages Hand   RT (Release): Engages Hand
                   Left Stick: Arm              Right Stick: Wrist
         */
+
         robotHardware.setArmPower(-gamepad2.left_stick_y * RobotHardware.ARM_UP_POWER);
-        double wristPower = gamepad2.right_stick_y;
+
+        double wristPower = robotHardware.wristServo.getPosition();
+        double wristSpeed = gamepad2.right_stick_y * RobotHardware.HAND_SPEED;
+
+        if (wristSpeed > 0.0 && wristPower < 1.0) {
+            wristPower += wristSpeed;
+        } else if (wristSpeed < 0.0 && wristPower > -1.0) {
+            wristPower += wristSpeed;
+        }
+
         if (wristPower > 1.0) {
             wristPower = 1.0;
-        } else if (wristPower < 0.0) {
-            wristPower = 0.0;
+        } else if (wristPower < -1.0) {
+            wristPower = -1.0;
         }
-        robotHardware.setWristPosition(wristPower * RobotHardware.HAND_SPEED);
+
+        robotHardware.setWristPosition(wristPower);
+
+
+       /*
+        robotHardware.setArmPower(-gamepad2.left_stick_y * RobotHardware.ARM_UP_POWER);
+        if(gamepad2.right_stick_y > 0){
+            robotHardware.setWristPosition(0.2);
+        }else if(gamepad2.right_stick_y < 0){
+            robotHardware.setWristPosition(-0.2);
+        }
+        */
 
 
         /*
