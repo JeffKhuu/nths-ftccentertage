@@ -59,10 +59,10 @@ public class BlueAllianceLeft extends OpMode {
     public void start() {
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        // Step 1:  Spin left for 0.5 seconds
+        // Step 1:  Spin left for 0.8 seconds
         driveTrain.setDrivePower(-TURN_SPEED, TURN_SPEED);
         runtime.reset();
-        while ((runtime.seconds() < 0.5)) {
+        while ((runtime.seconds() < 0.8)) {
             telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -70,7 +70,7 @@ public class BlueAllianceLeft extends OpMode {
         // Step 3:  Drive forward for 1 Second
         driveTrain.setDrivePower(FORWARD_SPEED, FORWARD_SPEED);
         runtime.reset();
-        while ((runtime.seconds() < 1.0)) {
+        while ((runtime.seconds() < 2.0)) {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }

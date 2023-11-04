@@ -70,8 +70,7 @@ public class manualOpMode extends OpMode {
         }else if(gamepad2.left_stick_y < 0 && curWristPosition > 0) {
             robotHardware.setWristPosition(curWristPosition - wristIncrement);
         }
-        //if the joystick is up and the wrist is not at 0 then increment its value up
-        //if the joystick is down and the wristposition is not 0 then move the wrist down
+
         if(gamepad2.dpad_up && curWristPosition < 1){
             robotHardware.setWristPosition(curWristPosition - wristIncrement);
         }else if(gamepad2.dpad_down && curWristPosition > 0){

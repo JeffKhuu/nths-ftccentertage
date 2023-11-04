@@ -62,23 +62,31 @@ public class BlueAllianceRight extends OpMode {
         // Step 1:  Drive forward for 1 seconds
         driveTrain.setDrivePower(FORWARD_SPEED, FORWARD_SPEED);
         runtime.reset();
-        while ((runtime.seconds() < 1.0)) {
+        while ((runtime.seconds() < 1.5)) {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
-        // Step 2:  Spin left for 0.5 seconds
+        // Step 2:  Spin left for 0.8 seconds
         driveTrain.setDrivePower(-TURN_SPEED, TURN_SPEED);
         runtime.reset();
-        while ((runtime.seconds() < 0.5)) {
+        while ((runtime.seconds() < 0.8)) {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
-        // Step 2:  Drive forward for 3 Second
+        // Step 2:  Spin left for 0.4 seconds
+        driveTrain.setDrivePower(-TURN_SPEED, TURN_SPEED);
+        runtime.reset();
+        while ((runtime.seconds() < 0.4)) {
+            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+        // Step 2:  Drive forward for 4 Second
         driveTrain.setDrivePower(FORWARD_SPEED, FORWARD_SPEED);
         runtime.reset();
-        while ((runtime.seconds() < 2.0)) {
+        while ((runtime.seconds() < 4.0)) {
             telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
