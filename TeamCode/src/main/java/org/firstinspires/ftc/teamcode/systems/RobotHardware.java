@@ -25,9 +25,9 @@ public class RobotHardware {
     public void init(){
         leftHand = opMode.hardwareMap.get(Servo.class, "leftHand");
 
-
         rightHand = opMode.hardwareMap.get(Servo.class, "rightHand");
         rightHand.setDirection(Servo.Direction.REVERSE);
+
         wristServo = opMode.hardwareMap.get(Servo.class, "wristServo");
 
         armMotor = opMode.hardwareMap.get(DcMotor.class, "motorArm");
@@ -35,7 +35,7 @@ public class RobotHardware {
        leftHand.setPosition(0);
        rightHand.setPosition(0);
 
-       wristServo.setPosition(1);
+       wristServo.setPosition(0);
 
        opMode.telemetry.addData("RobotHardware", "Hardware Initialized");
     }
@@ -49,23 +49,13 @@ public class RobotHardware {
         rightHand.setPosition(position);
     }
 
-
-
-
-
     public void setWristPosition(double position) {
         wristServo.setPosition(position);
     }
 
     public double getWristPosition() {
-
-
-
         return wristServo.getPosition();
     }
-
-
-
 
     public void servoTelemetry(){
         opMode.telemetry.addData("LEFT HAND POSITION", leftHand.getPosition());

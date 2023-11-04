@@ -55,41 +55,26 @@ public class manualOpMode extends OpMode {
                   Left Stick: Arm              Right Stick: Wrist
         */
 
+        //sets the DC arm moter power, very important for the arm to function
         robotHardware.setArmPower(-gamepad2.left_stick_y * RobotHardware.ARM_UP_POWER);
 
+        //Gets the current wrist position and sets the increment that the wrist moves by
         double curWristPosition = robotHardware.getWristPosition();
-        double wristIncrement = 0.1;
+        double wristIncrement = 0.1; //change this for wrist speed/possible angles
 
+        //if the joystick is up and the wrist is not at 0 then increment its value up
+        //if the joystick is down and the wristposition is not 0 then move the wrist down
         if(gamepad2.right_stick_y > 0 && curWristPosition < 1){
             robotHardware.setWristPosition(curWristPosition + wristIncrement);
         }else if(gamepad2.right_stick_y < 0 && curWristPosition > 0){
             robotHardware.setWristPosition(curWristPosition - wristIncrement);
         }
 
-
-       /*
-        robotHardware.setArmPower(-gamepad2.left_stick_y * RobotHardware.ARM_UP_POWER);
-        if(gamepad2.right_stick_y > 0){
-            robotHardware.setWristPosition(0.2);
-        }else if(gamepad2.right_stick_y < 0){
-            robotHardware.setWristPosition(-0.2);
-        }
-        */
-
-
-        /*
-       robotHardware.setArmPower(-gamepad2.left_stick_y * RobotHardware.ARM_UP_POWER);
-        if(gamepad2.right_stick_y > 0){
-            robotHardware.setWristPosition(RobotHardware.HAND_SPEED);
-        } else if (gamepad2.right_stick_y < 0) {
-            robotHardware.setWristPosition(-RobotHardware.HAND_SPEED);
-        }
-        */
-
+        //if the right trigger is down the fingers open
+        //if the joystick is down and the wristposition is not 0 then move the wrist down
         if(gamepad2.right_trigger == 1){
             robotHardware.setHandPositions(0.3);
-        }
-        if(gamepad2.right_trigger == 0){
+        }else if(gamepad2.right_trigger == 0){
             robotHardware.setHandPositions(0);
         }
 
