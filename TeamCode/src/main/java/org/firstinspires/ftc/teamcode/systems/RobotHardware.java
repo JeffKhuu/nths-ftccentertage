@@ -35,7 +35,6 @@ public class RobotHardware {
        leftHand.setPosition(0);
        rightHand.setPosition(0);
 
-       wristServo.setPosition(0);
 
        opMode.telemetry.addData("RobotHardware", "Hardware Initialized");
     }
