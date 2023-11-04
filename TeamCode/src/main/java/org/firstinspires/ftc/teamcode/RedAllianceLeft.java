@@ -35,7 +35,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.systems.DriveTrain;
 
-@Autonomous(name="Auto:Alliance Left", group="Autonomous")
+@Autonomous(name="Auto:Red Alliance Left", group="Autonomous")
 public class RedAllianceLeft extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -56,18 +56,26 @@ public class RedAllianceLeft extends OpMode {
     public void start() {
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        // Step 1:  Spin left for 0.5 seconds
-        driveTrain.setDrivePower(-TURN_SPEED, TURN_SPEED);
+        // Step 1:  Drive forward for 1 seconds
+        driveTrain.setDrivePower(FORWARD_SPEED, FORWARD_SPEED);
         runtime.reset();
-        while ((runtime.seconds() < 0.5)) {
+        while ((runtime.seconds() < 1.0)) {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
-        // Step 2:  Drive forward for 3 Second
+        // Step 1:  Spin right for 0.8 seconds
+        driveTrain.setDrivePower(TURN_SPEED, -TURN_SPEED);
+        runtime.reset();
+        while ((runtime.seconds() < 0.8)) {
+            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+        // Step 2:  Drive forward for 2 Second
         driveTrain.setDrivePower(FORWARD_SPEED, FORWARD_SPEED);
         runtime.reset();
-        while ((runtime.seconds() < 3.0)) {
+        while ((runtime.seconds() < 2.0)) {
             telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }

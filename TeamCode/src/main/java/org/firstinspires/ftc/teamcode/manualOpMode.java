@@ -18,6 +18,7 @@ public class manualOpMode extends OpMode {
     private final DriveTrain driveTrain = new DriveTrain(this);
     private final RobotHardware robotHardware = new RobotHardware(this);
 
+    boolean isHanging = false;
 
     @Override
     public void init(){
@@ -71,11 +72,23 @@ public class manualOpMode extends OpMode {
         }
         //if the joystick is up and the wrist is not at 0 then increment its value up
         //if the joystick is down and the wristposition is not 0 then move the wrist down
-//        if(gamepad2.dpad_up && curWristPosition < 1){
-//            robotHardware.setWristPosition(curWristPosition - wristIncrement);
-//        }else if(gamepad2.dpad_down && curWristPosition > 0){
-//            robotHardware.setWristPosition(curWristPosition + wristIncrement);
-//        }
+        if(gamepad2.dpad_up && curWristPosition < 1){
+            robotHardware.setWristPosition(curWristPosition - wristIncrement);
+        }else if(gamepad2.dpad_down && curWristPosition > 0){
+            robotHardware.setWristPosition(curWristPosition + wristIncrement);
+        }
+
+
+        if(gamepad2.b){
+            if(!isHanging){
+                robotHardware.setArmPower(RobotHardware.ARM_DOWN_POWER);
+                isHanging = true;
+            }
+            if(isHanging){
+                robotHardware.setArmPower(RobotHardware.ARM_DOWN_POWER);
+                isHanging = false;
+            }
+        }
 
         //if the right trigger is down the fingers open
         //if the joystick is down and the wristposition is not 0 then move the wrist down
