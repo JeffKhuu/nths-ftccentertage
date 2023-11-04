@@ -81,13 +81,15 @@ public class manualOpMode extends OpMode {
 
         if(gamepad2.b){
             if(!isHanging){
-                robotHardware.setArmPower(RobotHardware.ARM_DOWN_POWER);
                 isHanging = true;
             }
             if(isHanging){
-                robotHardware.setArmPower(RobotHardware.ARM_DOWN_POWER);
                 isHanging = false;
             }
+        }
+
+        if (isHanging) {
+            robotHardware.setArmPower(RobotHardware.ARM_DOWN_POWER);
         }
 
         //if the right trigger is down the fingers open
