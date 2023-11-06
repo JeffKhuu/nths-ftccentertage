@@ -18,13 +18,11 @@ public class manualOpMode extends OpMode {
     private final DriveTrain driveTrain = new DriveTrain(this);
     private final RobotHardware robotHardware = new RobotHardware(this);
 
-    boolean isHanging = false;
-
     @Override
     public void init(){
         driveTrain.init();
         robotHardware.init();
-        robotHardware.servoTelemetry();
+
         resetRuntime();
     }
 
@@ -53,58 +51,35 @@ public class manualOpMode extends OpMode {
 
                                   GAMEPAD TWO CONTROLS
                   RT (Hold): Disengages Hand   RT (Release): Engages Hand
-                  Left Stick: Arm              Right Stick: Wrist
+                  Left Stick: Arm              Right Stick/D-Pad Up & Down: Wrist
         */
 
         //sets the DC arm moter power, very important for the arm to function
         robotHardware.setArmPower(-gamepad2.right_stick_y * RobotHardware.ARM_UP_POWER);
 
-        //Gets the current wrist position and sets the increment that the wrist moves by
-        double curWristPosition = robotHardware.getWristPosition();
-        double wristIncrement = 0.001; //change this for wrist speed/possible angles
+        //If joystick is up, move wrist up, if joystick is down, move wrist down
+        robotHardware.setWristPosition(Math.round(gamepad2.right_stick_y));
 
-        //if the joystick is up and the wrist is not at 0 then increment its value up
-        //if the joystick is down and the wristposition is not 0 then move the wrist down
-        if(gamepad2.left_stick_y > 0 && curWristPosition < 1){
-            robotHardware.setWristPosition(curWristPosition + wristIncrement);
-        }else if(gamepad2.left_stick_y < 0 && curWristPosition > 0) {
-            robotHardware.setWristPosition(curWristPosition - wristIncrement);
+        if(gamepad2.dpad_up){
+            robotHardware.setWristPosition(1);
         }
-
-        if(gamepad2.dpad_up && curWristPosition < 1){
-            robotHardware.setWristPosition(curWristPosition - wristIncrement);
-        }else if(gamepad2.dpad_down && curWristPosition > 0){
-            robotHardware.setWristPosition(curWristPosition + wristIncrement);
-        }
-
-
-        if(gamepad2.b){
-            if(!isHanging){
-                isHanging = true;
-            }
-            if(isHanging){
-                isHanging = false;
-            }
-        }
-
-        if (isHanging) {
-            robotHardware.setArmPower(RobotHardware.ARM_DOWN_POWER);
+        if(gamepad2.dpad_down){
+            robotHardware.setWristPosition(-1);
         }
 
         //if the right trigger is down the fingers open
         //if the joystick is down and the wristposition is not 0 then move the wrist down
         if(gamepad2.right_trigger == 1){
-            robotHardware.setHandPositions(0.3);
+            robotHardware.setHandPositions(RobotHardware.HAND_SPEED);
         }else if(gamepad2.right_trigger == 0){
             robotHardware.setHandPositions(0);
         }
-
 
         /*
                     TELEMETRY
          */
         telemetry.addData("Status", "Run Time: " + runtime);
-        robotHardware.servoTelemetry();
+
     }
     public void stop(){
         telemetry.addData("Status", "Stopped");

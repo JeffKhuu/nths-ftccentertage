@@ -66,4 +66,8 @@ public class DriveTrain {
         selectedSpeed = x;
     }
 
+    public void updateTelemetry(){
+        opMode.telemetry.addData("", "");
+    }
+
 }

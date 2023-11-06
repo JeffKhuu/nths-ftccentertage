@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.configuration.ServoFlavor;
+import com.qualcomm.robotcore.hardware.configuration.annotations.ServoType;
 import com.qualcomm.robotcore.util.Range;
 
 public class RobotHardware {
@@ -13,10 +15,9 @@ public class RobotHardware {
     private Servo rightHand = null;
     public Servo wristServo = null;
 
-    public static final double MID_SERVO       =  0.5 ;
-    public static final double HAND_SPEED      =  0.02 ;  // sets rate to move servo
+    public static final double WRIST_SPEED     =  0.001 ;
+    public static final double HAND_SPEED      =  0.3 ;  // sets rate to move servo
     public static final double ARM_UP_POWER    =  0.75 ;
-    public static final double ARM_DOWN_POWER  = -0.75 ;
 
     public RobotHardware (OpMode opmode) {
         opMode = opmode;
@@ -47,23 +48,15 @@ public class RobotHardware {
     public void setHandPositions(double position) {
         leftHand.setPosition(position);
         rightHand.setPosition(position);
+        opMode.telemetry.addData("Left Hand Position", leftHand.getPosition());
+        opMode.telemetry.addData("Right Hand Position", rightHand.getPosition());
     }
 
-    public void setWristPosition(double position) {
-        wristServo.setPosition(position);
+    public void setWristPosition(int direction) {
+        wristServo.setPosition(getWristPosition() + (RobotHardware.WRIST_SPEED * direction));
+        opMode.telemetry.addData("Wrist Position", wristServo.getPosition());
     }
-
     public double getWristPosition() {
         return wristServo.getPosition();
     }
-
-    public void servoTelemetry(){
-        opMode.telemetry.addData("LEFT HAND POSITION", leftHand.getPosition());
-        opMode.telemetry.addData("RIGHT HAND POSITION", rightHand.getPosition());
-        opMode.telemetry.addData("WRIST POSITION", wristServo.getPosition());
-
-    }
-
-
-
 }

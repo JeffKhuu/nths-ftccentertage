@@ -27,16 +27,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.systems.DriveTrain;
 
-@Autonomous(name="Auto:Red Alliance Right", group="Autonomous")
-public class RedAllianceRight extends OpMode {
+@Autonomous(name="Auto: Blue Alliance Left", group="Autonomous")
+public class BlueAllianceLeft extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private final DriveTrain driveTrain = new DriveTrain(this);
@@ -56,15 +59,15 @@ public class RedAllianceRight extends OpMode {
     public void start() {
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        // Step 2:  Spin right for 0.8 seconds
-        driveTrain.setDrivePower(TURN_SPEED, -TURN_SPEED);
+        // Step 1:  Spin left for 0.8 seconds
+        driveTrain.setDrivePower(-TURN_SPEED, TURN_SPEED);
         runtime.reset();
         while ((runtime.seconds() < 0.8)) {
             telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
-        // Step 3:  Drive forward for 6 Second
+        // Step 3:  Drive forward for 1 Second
         driveTrain.setDrivePower(FORWARD_SPEED, FORWARD_SPEED);
         runtime.reset();
         while ((runtime.seconds() < 2.0)) {
