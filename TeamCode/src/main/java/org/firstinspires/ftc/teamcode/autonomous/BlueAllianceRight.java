@@ -30,75 +30,69 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.systems.DriveTrain;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.systems.ActionExecutor;
+import org.firstinspires.ftc.teamcode.systems.RobotPath;
+import org.firstinspires.ftc.teamcode.systems.TensorflowDetector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Autonomous(name="Auto: Blue Alliance Right", group="Autonomous")
 public class BlueAllianceRight extends OpMode {
 
-    private ElapsedTime runtime = new ElapsedTime();
-    private final DriveTrain driveTrain = new DriveTrain(this);
+    private final ElapsedTime runtime = new ElapsedTime();
+    private final ActionExecutor actionExecutor = new ActionExecutor(this, runtime);
+    private final TensorflowDetector tfDetector = new TensorflowDetector(this);
+    private final ArrayList<RobotPath> actions = new ArrayList<>();
 
     static final double     FORWARD_SPEED = 0.6;
     static final double     TURN_SPEED    = 0.5;
 
     public void init(){
-        driveTrain.init();
+        actionExecutor.init();
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");    //
+        telemetry.addData("Status", "Ready to run");
         telemetry.update();
     }
 
     @Override
     public void start() {
+        List<Recognition> recognitions = tfDetector.getRecognitions();
+        Recognition recognition = recognitions.get(0);
+
+        double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+
+/*        if(isInRange(x, -1, 1)){
+            actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR, 0.5, 1.0)); //Moves arm up for 1 second
+        }
+*/
+
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR, 0.5, 1.0)); //Moves arm up for 1 second
+        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 1.5));
+        actions.add(new RobotPath(-TURN_SPEED, TURN_SPEED, 0.8));
+        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 4.0));
+
+        actionExecutor.runPaths(actions);
+
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        // Step 1:  Drive forward for 1 seconds
-        driveTrain.setDrivePower(FORWARD_SPEED, FORWARD_SPEED);
-        runtime.reset();
-        while ((runtime.seconds() < 1.5)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-
+        // Step 1:  Drive forward for 1.5 seconds
         // Step 2:  Spin left for 0.8 seconds
-        driveTrain.setDrivePower(-TURN_SPEED, TURN_SPEED);
-        runtime.reset();
-        while ((runtime.seconds() < 0.8)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-
-        // Step 2:  Spin left for 0.4 seconds
-        driveTrain.setDrivePower(-TURN_SPEED, TURN_SPEED);
-        runtime.reset();
-        while ((runtime.seconds() < 0.4)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-
         // Step 2:  Drive forward for 4 Second
-        driveTrain.setDrivePower(FORWARD_SPEED, FORWARD_SPEED);
-        runtime.reset();
-        while ((runtime.seconds() < 4.0)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-
         // Step 4:  Stop
-        driveTrain.setDrivePower(0, 0);
 
-        telemetry.addData("Path", "Complete");
     }
 
     @Override
     public void loop() {
+    }
 
+    private boolean isInRange(double value, int min, int max){
+        return(min < value && value < max);
     }
 }

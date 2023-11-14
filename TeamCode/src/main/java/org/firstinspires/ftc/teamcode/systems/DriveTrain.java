@@ -4,14 +4,11 @@ package org.firstinspires.ftc.teamcode.systems;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import java.util.Map;
+import java.util.Locale;
 
 public class DriveTrain {
-    private OpMode opMode = null;
+    private final OpMode opMode;
     private DcMotor leftMotor;
     private DcMotor rightMotor;
     private final double[] speedArr = {0.7, 0.5, 0.2}; //70% speed, 50% speed, 20% speed
@@ -21,6 +18,8 @@ public class DriveTrain {
         this.opMode = opMode;
     }
     public void init() {
+
+
         leftMotor = opMode.hardwareMap.get(DcMotor.class, "leftMotor");
         rightMotor = opMode.hardwareMap.get(DcMotor.class, "rightMotor");
 
@@ -28,6 +27,12 @@ public class DriveTrain {
         rightMotor.setDirection(DcMotor.Direction.FORWARD);
 
         opMode.telemetry.addData(getClass().getName(), "Initialized");
+    }
+
+    public void updateTelemetry(){
+        opMode.telemetry.addLine("Selected Speed");
+        opMode.telemetry.addLine(writeSpeedTelemetry());
+        opMode.telemetry.addLine();
     }
 
     public void move(double Drive, double Turn) {
@@ -55,10 +60,9 @@ public class DriveTrain {
     }
 
     public void switchSpeed(){
-        if(selectedSpeed < speedArr.length-1){
-            selectedSpeed++;
-        }else{
-            selectedSpeed = 0;//Loop back to the original speed
+        selectedSpeed++;
+        if(selectedSpeed >= speedArr.length-1){
+            selectedSpeed = 0;
         }
     }
 
@@ -66,8 +70,25 @@ public class DriveTrain {
         selectedSpeed = x;
     }
 
-    public void updateTelemetry(){
-        opMode.telemetry.addData("", "");
+    public String writeSpeedTelemetry(){
+
+        StringBuilder result = new StringBuilder();
+
+        for(Double speed : speedArr){
+            if(speed == speedArr[selectedSpeed]){
+                result.append(String.format( Locale.ENGLISH, "||||||[ ● %.2f ]", (speed*100) ));
+            }else{
+                result.append(String.format( Locale.ENGLISH, "||||||[ ◯ %.2f ]", (speed*100) ));
+            }
+        }
+        result.append("|||||||");
+
+        /*
+        Expected Result:
+            |||||||[ ● 20% ]||||||[ ◯ 50% ]||||||[ ◯ 20% ]|||||||
+        */
+
+        return(result.toString());
     }
 
 }

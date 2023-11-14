@@ -35,10 +35,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.systems.DriveTrain;
 
-@Autonomous(name="Auto:Red Alliance Right", group="Autonomous")
+@Autonomous(name="Auto: Red Alliance Right", group="Autonomous")
 public class RedAllianceRight extends OpMode {
 
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
     private final DriveTrain driveTrain = new DriveTrain(this);
 
     static final double     FORWARD_SPEED = 0.6;

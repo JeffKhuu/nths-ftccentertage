@@ -2,11 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.systems.DriveTrain;
 import org.firstinspires.ftc.teamcode.systems.RobotHardware;
@@ -17,6 +13,9 @@ public class manualOpMode extends OpMode {
 
     private final DriveTrain driveTrain = new DriveTrain(this);
     private final RobotHardware robotHardware = new RobotHardware(this);
+
+    //BetterGamepad gamepad1 = new BetterGamepad(this.gamepad1);
+
 
     @Override
     public void init(){
@@ -54,31 +53,36 @@ public class manualOpMode extends OpMode {
                   Left Stick: Arm              Right Stick/D-Pad Up & Down: Wrist
         */
 
-        //sets the DC arm moter power, very important for the arm to function
+        //sets the DC arm motor power, very important for the arm to function
+        //  Values: -1 (Pull up) to 1 (Pull down)
+        //          Positive Arm Power = Arm Raises
+        //          Negative Arm Power = Arm Lowers
         robotHardware.setArmPower(-gamepad2.right_stick_y * RobotHardware.ARM_UP_POWER);
+        robotHardware.setWristPower(-gamepad2.left_stick_y);
 
-        //If joystick is up, move wrist up, if joystick is down, move wrist down
-        robotHardware.setWristPosition(Math.round(gamepad2.right_stick_y));
 
         if(gamepad2.dpad_up){
-            robotHardware.setWristPosition(1);
+            robotHardware.setWristPower(RobotHardware.WRIST_SPEED);
         }
         if(gamepad2.dpad_down){
-            robotHardware.setWristPosition(-1);
+            robotHardware.setWristPower(RobotHardware.WRIST_SPEED);
         }
 
-        //if the right trigger is down the fingers open
-        //if the joystick is down and the wristposition is not 0 then move the wrist down
-        if(gamepad2.right_trigger == 1){
-            robotHardware.setHandPositions(RobotHardware.HAND_SPEED);
-        }else if(gamepad2.right_trigger == 0){
-            robotHardware.setHandPositions(0);
+        if(gamepad2.right_trigger > 0){
+            robotHardware.setHandPower(RobotHardware.HAND_SPEED);
+        }else if(gamepad2.left_trigger > 0){
+            robotHardware.setHandPower(-RobotHardware.HAND_SPEED);
+        }else{
+            robotHardware.setHandPower(0);
         }
+
 
         /*
                     TELEMETRY
          */
         telemetry.addData("Status", "Run Time: " + runtime);
+        driveTrain.updateTelemetry();
+        robotHardware.updateTelemetry();
 
     }
     public void stop(){

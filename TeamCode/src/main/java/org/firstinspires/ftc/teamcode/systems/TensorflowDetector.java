@@ -17,8 +17,7 @@ public class TensorflowDetector {
             "Pixel", //Name
     };
     private TfodProcessor tfod;
-    private VisionPortal visionPortal;
-    OpMode opMode = null;
+    OpMode opMode;
     public TensorflowDetector(OpMode opMode){
         this.opMode = opMode;
     }
@@ -47,7 +46,7 @@ public class TensorflowDetector {
 
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
         builder.addProcessor(tfod);
-        visionPortal = builder.build();
+        VisionPortal visionPortal = builder.build();
     }
 
     public List<Recognition> getRecognitions(){
