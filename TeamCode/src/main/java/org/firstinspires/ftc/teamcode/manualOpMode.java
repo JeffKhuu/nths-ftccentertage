@@ -75,7 +75,19 @@ public class manualOpMode extends OpMode {
         }else{
             robotHardware.setHandPower(0);
         }
+        // if only r 2 is pressed
 
+        if (gamepad2.right_trigger > 0.1) {
+            robotHardware.setReverse();
+        }
+        // trigger or both left and r 2 are pressed for forward motion
+        else if (gamepad2.left_trigger > 0.1 || (gamepad2.left_trigger > 0.1 && gamepad2.right_trigger > 0.1)) {
+            robotHardware.setForward();
+        }
+        // If nothing is pressed, stop the CR Servos
+        else {
+            robotHardware.stopServos();
+        }
 
         /*
                     TELEMETRY
