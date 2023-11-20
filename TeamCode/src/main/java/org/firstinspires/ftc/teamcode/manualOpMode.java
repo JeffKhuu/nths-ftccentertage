@@ -14,9 +14,6 @@ public class manualOpMode extends OpMode {
     private final DriveTrain driveTrain = new DriveTrain(this);
     private final RobotHardware robotHardware = new RobotHardware(this);
 
-    //BetterGamepad gamepad1 = new BetterGamepad(this.gamepad1);
-
-
     @Override
     public void init(){
         driveTrain.init();
@@ -58,14 +55,12 @@ public class manualOpMode extends OpMode {
         //          Positive Arm Power = Arm Raises
         //          Negative Arm Power = Arm Lowers
         robotHardware.setArmPower(-gamepad2.right_stick_y * RobotHardware.ARM_UP_POWER);
-        robotHardware.setWristPower(-gamepad2.left_stick_y);
 
-
-        if(gamepad2.dpad_up){
-            robotHardware.setWristPower(RobotHardware.WRIST_SPEED);
+        if(gamepad2.dpad_up || gamepad2.left_stick_y > 0){
+            robotHardware.setWristPosition(1);
         }
-        if(gamepad2.dpad_down){
-            robotHardware.setWristPower(RobotHardware.WRIST_SPEED);
+        if(gamepad2.dpad_down || gamepad2.left_stick_y < 0){
+            robotHardware.setWristPosition(-1);
         }
 
         if(gamepad2.right_trigger > 0){
@@ -74,19 +69,6 @@ public class manualOpMode extends OpMode {
             robotHardware.setHandPower(-RobotHardware.HAND_SPEED);
         }else{
             robotHardware.setHandPower(0);
-        }
-        // if only r 2 is pressed
-
-        if (gamepad2.right_trigger > 0.1) {
-            robotHardware.setReverse();
-        }
-        // trigger or both left and r 2 are pressed for forward motion
-        else if (gamepad2.left_trigger > 0.1 || (gamepad2.left_trigger > 0.1 && gamepad2.right_trigger > 0.1)) {
-            robotHardware.setForward();
-        }
-        // If nothing is pressed, stop the CR Servos
-        else {
-            robotHardware.stopServos();
         }
 
         /*

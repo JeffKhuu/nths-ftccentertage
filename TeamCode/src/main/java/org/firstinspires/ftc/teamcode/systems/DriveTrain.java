@@ -76,9 +76,9 @@ public class DriveTrain {
 
         for(Double speed : speedArr){
             if(speed == speedArr[selectedSpeed]){
-                result.append(String.format( Locale.ENGLISH, "||||||[ ● %.2f ]", (speed*100) ));
+                result.append(String.format( Locale.ENGLISH, "||||||[ ● %.0f ]", (speed*100) ));
             }else{
-                result.append(String.format( Locale.ENGLISH, "||||||[ ◯ %.2f ]", (speed*100) ));
+                result.append(String.format( Locale.ENGLISH, "||||||[ ◯ %.0f ]", (speed*100) ));
             }
         }
         result.append("|||||||");

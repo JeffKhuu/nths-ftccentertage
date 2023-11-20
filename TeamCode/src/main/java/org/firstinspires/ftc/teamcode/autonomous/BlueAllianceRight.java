@@ -65,17 +65,24 @@ public class BlueAllianceRight extends OpMode {
         List<Recognition> recognitions = tfDetector.getRecognitions();
         Recognition recognition = recognitions.get(0);
 
-        double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+        double pixelPosition = (recognition.getLeft() + recognition.getRight()) / 2 ;
 
-/*        if(isInRange(x, -1, 1)){
-            actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR, 0.5, 1.0)); //Moves arm up for 1 second
+        if(isInRange(pixelPosition, -40, -20)){ //Pixel is to the left
+            actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 0.2));
+            actions.add(new RobotPath(-TURN_SPEED, TURN_SPEED, 0.8, 5));
         }
-*/
 
+        else if(isInRange(pixelPosition, -1, 1)){ //Pixel is centered
+            actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 1, 5));
+
+        } else if(isInRange(pixelPosition, 20, 40)){ //Pixel is to the right
+            actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 0.2));
+            actions.add(new RobotPath(TURN_SPEED, -TURN_SPEED, 0.8, 5));
+        }
+
+        actions.add(new RobotPath(-1, 0, 1));
+        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 4));
         actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR, 0.5, 1.0)); //Moves arm up for 1 second
-        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 1.5));
-        actions.add(new RobotPath(-TURN_SPEED, TURN_SPEED, 0.8));
-        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 4.0));
 
         actionExecutor.runPaths(actions);
 

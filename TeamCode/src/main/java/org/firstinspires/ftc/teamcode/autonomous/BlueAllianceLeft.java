@@ -62,8 +62,13 @@ public class BlueAllianceLeft extends OpMode {
     public void start() {
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, 1, 5, 5));
+
         actions.add(new RobotPath(-TURN_SPEED, TURN_SPEED, 0.8));
         actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 2));
+
+        telemetry.addData("Status", "Path Initialized");
+        telemetry.update();
 
         actionExecutor.runPaths(actions);
 

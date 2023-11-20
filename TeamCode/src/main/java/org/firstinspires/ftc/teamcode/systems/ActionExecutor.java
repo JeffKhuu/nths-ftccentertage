@@ -34,6 +34,7 @@ public class ActionExecutor {
                 while ((runtime.seconds() < action.duration)) {
                     autoMode.telemetry.addData("Path", "Leg %d: %4.1f S Elapsed",
                             actions.indexOf(action), runtime.seconds());
+                    autoMode.telemetry.update();
                 }
                 driveTrain.setDrivePower(0,0);
             }
@@ -43,7 +44,7 @@ public class ActionExecutor {
                     robotHardware.setArmPower(action.power);
                 }
                 else if(action.hardware == RobotPath.UtilizedHardware.WRIST_SERVO){
-                    robotHardware.setWristPower(action.power);
+                    robotHardware.setWristPosition((int) Math.round(action.power));
                 }
                 else if(action.hardware == RobotPath.UtilizedHardware.INTAKE_SERVO){
                     robotHardware.setHandPower(action.power);
@@ -53,15 +54,24 @@ public class ActionExecutor {
                 while ((runtime.seconds() < action.duration)) {
                     autoMode.telemetry.addData("Path", "Leg %d: %4.1f S Elapsed",
                             actions.indexOf(action), runtime.seconds());
+                    autoMode.telemetry.update();
                 }
                 robotHardware.setArmPower(0);
-                robotHardware.setWristPower(0);
                 robotHardware.setHandPower(0);
+            }
+
+            if(action.delay != 0){
+                runtime.reset();
+                while ((runtime.seconds() < action.delay)) {
+                    autoMode.telemetry.addData("Path", "Leg %d: Delay",
+                            actions.indexOf(action));
+                    autoMode.telemetry.update();
+                }
             }
         }
 
-
         autoMode.telemetry.addData("Path", "Complete");
+        autoMode.telemetry.update();
     }
 
 }
