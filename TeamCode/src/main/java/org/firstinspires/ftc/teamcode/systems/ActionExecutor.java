@@ -44,7 +44,7 @@ public class ActionExecutor {
                     robotHardware.setArmPower(action.power);
                 }
                 else if(action.hardware == RobotPath.UtilizedHardware.WRIST_SERVO){
-                    robotHardware.setWristPosition((int) Math.round(action.power));
+                    robotHardware.moveWristPosition((int) Math.round(action.power));
                 }
                 else if(action.hardware == RobotPath.UtilizedHardware.INTAKE_SERVO){
                     robotHardware.setHandPower(action.power);

@@ -59,7 +59,7 @@ public class RobotHardware {
 
 //            ! DEPRECATED HAND CODE !
 
-    public void setWristPosition(int direction) {
+    public void moveWristPosition(int direction) {
         wristServo.setPosition(getWristPosition() + (RobotHardware.WRIST_SPEED * direction));
     }
 

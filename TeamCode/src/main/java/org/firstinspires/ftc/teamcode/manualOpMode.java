@@ -57,10 +57,10 @@ public class manualOpMode extends OpMode {
         robotHardware.setArmPower(-gamepad2.right_stick_y * RobotHardware.ARM_UP_POWER);
 
         if(gamepad2.dpad_up || gamepad2.left_stick_y > 0){
-            robotHardware.setWristPosition(1);
+            robotHardware.moveWristPosition(1);
         }
-        if(gamepad2.dpad_down || gamepad2.left_stick_y < 0){
-            robotHardware.setWristPosition(-1);
+        else if(gamepad2.dpad_down || gamepad2.left_stick_y < 0){
+            robotHardware.moveWristPosition(-1);
         }
 
         if(gamepad2.right_trigger > 0){
