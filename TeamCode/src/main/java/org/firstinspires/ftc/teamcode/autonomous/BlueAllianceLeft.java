@@ -32,10 +32,10 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import org.firstinspires.ftc.teamcode.systems.RobotHardware;
 import org.firstinspires.ftc.teamcode.systems.ActionExecutor;
 import org.firstinspires.ftc.teamcode.systems.RobotPath;
-
+import org.firstinspires.ftc.teamcode.systems.DriveTrain;
 import java.util.ArrayList;
 
 @Autonomous(name="Auto: Blue Alliance Left", group="Autonomous")
@@ -57,7 +57,7 @@ public class BlueAllianceLeft extends OpMode {
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
     }
-
+/*
     @Override
     public void start() {
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
@@ -76,6 +76,48 @@ public class BlueAllianceLeft extends OpMode {
         // Step 2:  Drive forward for 2 Second
     }
 
+
+    */
+    @Override
+
+    public void start() {
+
+        double intakeServoSpeed = RobotHardware.INTAKE_SERVO_SPEED;
+
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, intakeServoSpeed, 5, 5));
+
+        actions.add(new RobotPath(DriveTrain.TURN_SPEED, -DriveTrain.TURN_SPEED, 0.8));
+        actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, 2));
+
+        //Run the arm motor continuously for 1.2 seconds and then stop
+        double armMotorPower = 1.0;
+        double armMotorDuration = 1.2; // in seconds
+
+        RobotHardware.runArmMotorForDuration(armMotorPower, armMotorDuration);
+
+        //Run the wrist servo continuously to its final angle limit and then stop
+        double wristServoPower = 1.0;
+        double wristServoDuration = 1.2; // in seconds
+
+        RobotHardware.runWristServoForDuration(wristServoPower, wristServoDuration);
+
+        //Continuously set power to the hand servo in the range [0, 3]
+        double handServoPower;
+        handServoPower = 2.0;
+
+        RobotHardware.setHandPower(handServoPower);
+
+        telemetry.addData("Status", "Path Initialized");
+        telemetry.update();
+
+        actionExecutor.runPaths(actions);
+
+        // Step 1: work in progress
+        // Step 2: work in progress
+        // Step 3: Run the arm motor continuously for 1.2 seconds and then stop
+        // Step 4: Run the wrist servo continuously to its final angle limit and then stop
+        // Step 5: Continuously set power to the hand servo in the range [0, 3]
+    }
     @Override
     public void loop() {
 
