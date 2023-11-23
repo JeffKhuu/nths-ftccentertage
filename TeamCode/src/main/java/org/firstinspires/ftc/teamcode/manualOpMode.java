@@ -56,17 +56,25 @@ public class manualOpMode extends OpMode {
         //          Negative Arm Power = Arm Lowers
         robotHardware.setArmPower(-gamepad2.right_stick_y * RobotHardware.ARM_UP_POWER);
 
-        if(gamepad2.dpad_up || gamepad2.left_stick_y > 0){
-            robotHardware.moveWristPosition(1);
+        if(gamepad2.b){
+            if(robotHardware.getDroneServoPosition() == RobotHardware.DRONE_IDLE){
+                robotHardware.moveDroneServo(RobotHardware.DRONE_LAUNCHED);
+            }else{
+                robotHardware.moveDroneServo(RobotHardware.DRONE_IDLE);
+            }
         }
-        else if(gamepad2.dpad_down || gamepad2.left_stick_y < 0){
+
+        if(gamepad2.dpad_up || gamepad2.left_stick_y == -1){
             robotHardware.moveWristPosition(-1);
+        }
+        else if(gamepad2.dpad_down || gamepad2.left_stick_y == 1){
+            robotHardware.moveWristPosition(1);
         }
 
         if(gamepad2.right_trigger > 0){
-            robotHardware.setHandPower(RobotHardware.HAND_SPEED);
+            robotHardware.setHandPower(RobotHardware.INTAKE_SPEED);
         }else if(gamepad2.left_trigger > 0){
-            robotHardware.setHandPower(-RobotHardware.HAND_SPEED);
+            robotHardware.setHandPower(-RobotHardware.OUTTAKE_SPEED);
         }else{
             robotHardware.setHandPower(0);
         }

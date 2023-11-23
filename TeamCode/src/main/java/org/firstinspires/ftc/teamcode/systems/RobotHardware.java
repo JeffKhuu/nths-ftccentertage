@@ -12,11 +12,17 @@ public class RobotHardware {
     private DcMotor armMotor;
     private CRServo leftHand;
     private CRServo rightHand;
-    public Servo wristServo;
+    private Servo wristServo;
 
-    public static final double WRIST_SPEED     =  0.01 ;
-    public static final double HAND_SPEED      =  0.2 ;  // sets rate to move servo
+    private Servo droneServo;
+
+    public static final double WRIST_SPEED     =  0.001 ;
+    public static final double INTAKE_SPEED      =  0.2 ;  // sets rate to move servo
+    public static final double OUTTAKE_SPEED = 1.0;
     public static final double ARM_UP_POWER    =  0.75 ;
+
+    public static final double DRONE_IDLE = 1.0;
+    public static final double DRONE_LAUNCHED = 0.5;
 
     public RobotHardware (OpMode opmode) {
         opMode = opmode;
@@ -47,17 +53,10 @@ public class RobotHardware {
         armMotor.setPower(Range.clip(power, -1, 1));
     }
 
-    /* public void setWristPower(double power){
-        wristServo.setPower(Range.clip(power, -1, 1));
-    }*/
-
     public void setHandPower(double power) {
         leftHand.setPower(Range.clip(power, -1, 1));
         rightHand.setPower(Range.clip(power, -1, 1));
     }
-
-
-//            ! DEPRECATED HAND CODE !
 
     public void moveWristPosition(int direction) {
         wristServo.setPosition(getWristPosition() + (RobotHardware.WRIST_SPEED * direction));
@@ -65,6 +64,14 @@ public class RobotHardware {
 
     public double getWristPosition() {
         return wristServo.getPosition();
+    }
+
+    public void moveDroneServo(double position){
+        droneServo.setPosition(position);
+    }
+
+    public double getDroneServoPosition(){
+        return(droneServo.getPosition());
     }
 
 
