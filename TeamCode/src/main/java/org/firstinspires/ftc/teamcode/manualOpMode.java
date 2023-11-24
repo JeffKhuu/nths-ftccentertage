@@ -72,11 +72,13 @@ public class manualOpMode extends OpMode {
         }
 
         if(gamepad2.right_trigger > 0){
-            robotHardware.setHandPower(-RobotHardware.OUTTAKE_SPEED);
+            robotHardware.setHandPower(1);
         }else{
-            robotHardware.setHandPower(-RobotHardware.INTAKE_SPEED);
+            robotHardware.setHandPower(-1);
         }
-
+        if(gamepad2.y){
+            robotHardware.setHandPower(0);
+        }
         /*
                     TELEMETRY
          */

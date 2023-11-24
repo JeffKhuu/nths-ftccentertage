@@ -67,7 +67,7 @@ public class RedAllianceLeft extends OpMode {
         // Step 1:  Spin right for 0.8 seconds
         driveTrain.setDrivePower(TURN_SPEED, -TURN_SPEED);
         runtime.reset();
-        while ((runtime.seconds() < 0.8)) {
+        while ((runtime.seconds() < 0.95)) {
             telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
