@@ -33,7 +33,6 @@ public class ActionExecutor {
                 runtime.reset();
                 while ((runtime.seconds() < action.duration)) {
 
-
                     autoMode.telemetry.addData("Path", "Leg %d: %4.1f S Elapsed",
                             actions.indexOf(action), runtime.seconds());
                     autoMode.telemetry.update();
