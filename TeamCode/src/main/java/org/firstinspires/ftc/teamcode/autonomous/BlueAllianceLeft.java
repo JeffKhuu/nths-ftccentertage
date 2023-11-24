@@ -82,30 +82,14 @@ public class BlueAllianceLeft extends OpMode {
 
     public void start() {
 
-        double intakeServoSpeed = RobotHardware.INTAKE_SERVO_SPEED;
-
-        actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, intakeServoSpeed, 5, 5));
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, RobotHardware.INTAKE_SERVO_SPEED, 5, 5));
 
         actions.add(new RobotPath(DriveTrain.TURN_SPEED, -DriveTrain.TURN_SPEED, 0.8));
         actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, 2));
 
-        //Run the arm motor continuously for 1.2 seconds and then stop
-        double armMotorPower = 1.0;
-        double armMotorDuration = 1.2; // in seconds
-
-        RobotHardware.runArmMotorForDuration(armMotorPower, armMotorDuration);
-
-        //Run the wrist servo continuously to its final angle limit and then stop
-        double wristServoPower = 1.0;
-        double wristServoDuration = 1.2; // in seconds
-
-        RobotHardware.runWristServoForDuration(wristServoPower, wristServoDuration);
-
-        //Continuously set power to the hand servo in the range [0, 3]
-        double handServoPower;
-        handServoPower = 2.0;
-
-        RobotHardware.setHandPower(handServoPower);
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR, 1.0, 1.2));
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 1.2));
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, 2.0, 3.0));
 
         telemetry.addData("Status", "Path Initialized");
         telemetry.update();

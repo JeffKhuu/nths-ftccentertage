@@ -48,7 +48,7 @@ public class DriveTrain {
         }
 
         // Use existing function to drive both wheels.
-        setDrivePower(left * FORWARD_SPEED, right * FORWARD_SPEED);
+        setDrivePower(left * speedArr[selectedSpeed], right * speedArr[selectedSpeed]);
     }
 
     public void setDrivePower(double leftWheel, double rightWheel) {
