@@ -75,7 +75,7 @@ public class manualOpMode extends OpMode {
             robotHardware.setHandPower(RobotHardware.OUTTAKE_SPEED);
         }else{
             robotHardware.setHandPower(RobotHardware.INTAKE_SPEED);
-        };
+        }
 
         /*
                     TELEMETRY
