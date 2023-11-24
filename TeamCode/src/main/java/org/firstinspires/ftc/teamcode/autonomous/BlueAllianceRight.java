@@ -26,81 +26,84 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.firstinspires.ftc.teamcode.autonomous;
-
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.systems.ActionExecutor;
-import org.firstinspires.ftc.teamcode.systems.RobotPath;
-import org.firstinspires.ftc.teamcode.systems.TensorflowDetector;
-
-import java.util.ArrayList;
-import java.util.List;
-
-@Autonomous(name="Auto: Blue Alliance Right", group="Autonomous")
-public class BlueAllianceRight extends OpMode {
-
-    private final ElapsedTime runtime = new ElapsedTime();
-    private final ActionExecutor actionExecutor = new ActionExecutor(this, runtime);
-    private final TensorflowDetector tfDetector = new TensorflowDetector(this);
-    private final ArrayList<RobotPath> actions = new ArrayList<>();
-
-    static final double     FORWARD_SPEED = 0.6;
-    static final double     TURN_SPEED    = 0.5;
-
-    public void init(){
-        actionExecutor.init();
-
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");
-        telemetry.update();
-    }
-
-    @Override
-    public void start() {
-        List<Recognition> recognitions = tfDetector.getRecognitions();
-        Recognition recognition = recognitions.get(0);
-
-        double pixelPosition = (recognition.getLeft() + recognition.getRight()) / 2 ;
-
-//        if(isInRange(pixelPosition, -40, -20)){ //Pixel is to the left
-//            actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 0.2));
-//            actions.add(new RobotPath(-TURN_SPEED, TURN_SPEED, 0.8, 5));
-//        }
 //
-//        else if(isInRange(pixelPosition, -1, 1)){ //Pixel is centered
-//            actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 1, 5));
+//package org.firstinspires.ftc.teamcode.autonomous;
 //
-//        } else if(isInRange(pixelPosition, 20, 40)){ //Pixel is to the right
-//            actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 0.2));
-//            actions.add(new RobotPath(TURN_SPEED, -TURN_SPEED, 0.8, 5));
-//        }
+//import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+//import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+//import com.qualcomm.robotcore.util.ElapsedTime;
+//
+//import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+//import org.firstinspires.ftc.teamcode.systems.ActionExecutor;
+//import org.firstinspires.ftc.teamcode.systems.RobotPath;
+//import org.firstinspires.ftc.teamcode.systems.TensorflowDetector;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//@Disabled
+//@Autonomous(name="Auto: Blue Alliance Right", group="Autonomous")
+//public class BlueAllianceRight extends OpMode {
+//
+//    private final ElapsedTime runtime = new ElapsedTime();
+//    //private final ActionExecutor actionExecutor = new ActionExecutor(this, runtime);
+//    private final TensorflowDetector tfDetector = new TensorflowDetector(this);
+//    private final ArrayList<RobotPath> actions = new ArrayList<>();
+//
+//    static final double     FORWARD_SPEED = 0.6;
+//    static final double     TURN_SPEED    = 0.5;
 
-        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 2));
-        actions.add(new RobotPath(-1, 0, 1));
-        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 4));
-        actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR, 0.5, 1.0)); //Moves arm up for 1 second
-
-        actionExecutor.runPaths(actions);
-
-        // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
-
-        // Step 1:  Drive forward for 1.5 seconds
-        // Step 2:  Spin left for 0.8 seconds
-        // Step 2:  Drive forward for 4 Second
-        // Step 4:  Stop
-
-    }
-
-    @Override
-    public void loop() {
-    }
-
-    private boolean isInRange(double value, int min, int max){
-        return(min < value && value < max);
-    }
-}
+//    public void init(){
+//        actionExecutor.init();
+//
+//        // Send telemetry message to signify robot waiting;
+//        telemetry.addData("Status", "Ready to run");
+//        telemetry.update();
+//    }
+//
+//    @Override
+//    public void start() {
+//        List<Recognition> recognitions = tfDetector.getRecognitions();
+//        Recognition recognition = recognitions.get(0);
+//
+//        double pixelPosition = (recognition.getLeft() + recognition.getRight()) / 2 ;
+//
+////        if(isInRange(pixelPosition, -40, -20)){ //Pixel is to the left
+////            actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 0.2));
+////            actions.add(new RobotPath(-TURN_SPEED, TURN_SPEED, 0.8, 5));
+////        }
+////
+////        else if(isInRange(pixelPosition, -1, 1)){ //Pixel is centered
+////            actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 1, 5));
+////
+////        } else if(isInRange(pixelPosition, 20, 40)){ //Pixel is to the right
+////            actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 0.2));
+////            actions.add(new RobotPath(TURN_SPEED, -TURN_SPEED, 0.8, 5));
+////        }
+//
+//        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 2));
+//        actions.add(new RobotPath(-1, 0, 1));
+//        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 4));
+//        actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR, 0.5, 1.0)); //Moves arm up for 1 second
+//
+//        actionExecutor.runPaths(actions);
+//
+//
+//        // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
+//
+//        // Step 1:  Drive forward for 1.5 seconds
+//        // Step 2:  Spin left for 0.8 seconds
+//        // Step 2:  Drive forward for 4 Second
+//        // Step 4:  Stop
+//
+//    }
+//
+//    @Override
+//    public void loop() {
+//    }
+//
+//    private boolean isInRange(double value, int min, int max){
+//        return(min < value && value < max);
+//    }
+//}

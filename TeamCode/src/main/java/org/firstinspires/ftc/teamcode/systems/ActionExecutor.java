@@ -1,19 +1,20 @@
 package org.firstinspires.ftc.teamcode.systems;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
 
 public class ActionExecutor {
-    OpMode autoMode;
+    LinearOpMode autoMode;
     private final ElapsedTime runtime;
 
     DriveTrain driveTrain;
     RobotHardware robotHardware;
 
 
-    public ActionExecutor(OpMode opMode, ElapsedTime runtime){
+    public ActionExecutor(LinearOpMode opMode, ElapsedTime runtime){
         this.autoMode = opMode;
         this.runtime = runtime;
     }
@@ -26,13 +27,12 @@ public class ActionExecutor {
         robotHardware.init();
     }
 
-    public void runPaths(ArrayList<RobotPath> actions){
+    public void  runPaths(ArrayList<RobotPath> actions) {
         for(RobotPath action : actions){
             if(action.type == RobotPath.Type.MOVEMENT){
                 driveTrain.setDrivePower(action.leftPower, action.rightPower);
                 runtime.reset();
-                while ((runtime.seconds() < action.duration)) {
-
+                while ((runtime.seconds() < action.duration) && autoMode.opModeIsActive()) {
                     autoMode.telemetry.addData("Path", "Leg %d: %4.1f S Elapsed",
                             actions.indexOf(action), runtime.seconds());
                     autoMode.telemetry.update();
@@ -52,7 +52,7 @@ public class ActionExecutor {
                 }
 
                 runtime.reset();
-                while ((runtime.seconds() < action.duration)) {
+                while ((runtime.seconds() < action.duration) && autoMode.opModeIsActive()) {
                     autoMode.telemetry.addData("Path", "Leg %d: %4.1f S Elapsed",
                             actions.indexOf(action), runtime.seconds());
                     autoMode.telemetry.update();

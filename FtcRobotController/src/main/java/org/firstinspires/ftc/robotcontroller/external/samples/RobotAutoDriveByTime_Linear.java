@@ -85,7 +85,7 @@ public class RobotAutoDriveByTime_Linear extends LinearOpMode {
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
 
-        // Wait for the game to start (driver presses PLAY)
+        // Wait for the game CSX Ato start (driver presses PLAY)
         waitForStart();
 
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way

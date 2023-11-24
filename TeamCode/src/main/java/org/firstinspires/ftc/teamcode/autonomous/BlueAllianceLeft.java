@@ -27,83 +27,101 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.systems.RobotHardware;
-import org.firstinspires.ftc.teamcode.systems.ActionExecutor;
-import org.firstinspires.ftc.teamcode.systems.RobotPath;
-import org.firstinspires.ftc.teamcode.systems.DriveTrain;
-import java.util.ArrayList;
 
-@Autonomous(name="Auto: Blue Alliance Left", group="Autonomous")
-public class BlueAllianceLeft extends OpMode {
+/*
+ * This OpMode illustrates the concept of driving a path based on time.
+ * The code is structured as a LinearOpMode
+ *
+ * The code assumes that you do NOT have encoders on the wheels,
+ *   otherwise you would use: RobotAutoDriveByEncoder;
+ *
+ *   The desired path in this example is:
+ *   - Drive forward for 3 seconds
+ *   - Spin right for 1.3 seconds
+ *   - Drive Backward for 1 Second
+ *
+ *  The code is written in a simple form with no optimizations.
+ *  However, there are several ways that this type of sequence could be streamlined,
+ *
+ * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
+ */
 
-    private final ElapsedTime runtime = new ElapsedTime();
-    private final ActionExecutor actionExecutor = new ActionExecutor(this, runtime);
+@Autonomous(name="Autonomous: Blue Alliance Left", group="Autonomous")
+public class BlueAllianceLeft extends LinearOpMode {
 
-    private final ArrayList<RobotPath> actions = new ArrayList<>();
+    /* Declare OpMode members. */
+    private DcMotor         leftDrive   = null;
+    private DcMotor         rightDrive  = null;
+
+    private ElapsedTime     runtime = new ElapsedTime();
+
 
     static final double     FORWARD_SPEED = 0.6;
     static final double     TURN_SPEED    = 0.5;
 
-    public void init(){
-        actionExecutor.init();
+    @Override
+    public void runOpMode() {
 
+        // Initialize the drive system variables.
+        leftDrive  = hardwareMap.get(DcMotor.class, "leftMotor");
+        rightDrive = hardwareMap.get(DcMotor.class, "rightMotor");
+
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");
+        telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
-    }
-/*
-    @Override
-    public void start() {
+
+        // Wait for the game CSX Ato start (driver presses PLAY)
+        waitForStart();
+
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, 1, 5, 5));
+        // Step 1:  Drive forward for 3 seconds
+        leftDrive.setPower(FORWARD_SPEED);
+        rightDrive.setPower(FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
+            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
 
-        actions.add(new RobotPath(-TURN_SPEED, TURN_SPEED, 0.8));
-        actions.add(new RobotPath(FORWARD_SPEED, FORWARD_SPEED, 2));
+        // Step 2:  Spin right for 1.3 seconds
+        leftDrive.setPower(TURN_SPEED);
+        rightDrive.setPower(-TURN_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 1.3)) {
+            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
 
-        telemetry.addData("Status", "Path Initialized");
+        // Step 3:  Drive Backward for 1 Second
+        leftDrive.setPower(-FORWARD_SPEED);
+        rightDrive.setPower(-FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
+            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+        // Step 4:  Stop
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+
+        telemetry.addData("Path", "Complete");
         telemetry.update();
-
-        actionExecutor.runPaths(actions);
-
-        // Step 1:  Spin left for 0.8 seconds
-        // Step 2:  Drive forward for 2 Second
-    }
-
-
-    */
-    @Override
-
-    public void start() {
-
-        actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, RobotHardware.INTAKE_SERVO_SPEED, 5, 5));
-
-        actions.add(new RobotPath(DriveTrain.TURN_SPEED, -DriveTrain.TURN_SPEED, 0.8));
-        actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, 2));
-
-        actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR, 1.0, 1.2));
-        actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 1.2));
-        actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, 2.0, 3.0));
-
-        telemetry.addData("Status", "Path Initialized");
-        telemetry.update();
-
-        actionExecutor.runPaths(actions);
-
-        // Step 1: work in progress
-        // Step 2: work in progress
-        // Step 3: Run the arm motor continuously for 1.2 seconds and then stop
-        // Step 4: Run the wrist servo continuously to its final angle limit and then stop
-        // Step 5: Continuously set power to the hand servo in the range [0, 3]
-    }
-    @Override
-    public void loop() {
-
+        sleep(1000);
     }
 }
