@@ -26,10 +26,10 @@ public class DriveTrain {
     public static final double[] BACKWARD = {-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED};
 
     /** The constant variable storing an array with the four motor powers to move the robot left. */
-    public static final double[] LEFT = {-FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED};
+    public static final double[] LEFT = {-FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED};
 
     /** The constant variable storing an array with the four motor powers to move the robot right. */
-    public static final double[] RIGHT = {FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED};
+    public static final double[] RIGHT = {FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED};
 
     /** The constant variable storing an array with the four motor powers to spin the robot clockwise. */
     public static final double[] SPIN_CW = {TURN_SPEED, -TURN_SPEED, TURN_SPEED, -TURN_SPEED};
@@ -59,7 +59,7 @@ public class DriveTrain {
     }
 
     public void updateTelemetry() {
-        /* Handles the drive trains telemetry */
+        /* Handles the drive train's telemetry */
         opMode.telemetry.addLine("Selected Speed");
         opMode.telemetry.addLine(writeSpeedTelemetry());
         opMode.telemetry.addLine();
@@ -75,45 +75,27 @@ public class DriveTrain {
         //x: left-stick-x
         //y: left-stick-y
         //Turn: right-stick-x
-        double theta = Math.atan2(y, x);
-        double power = Math.hypot(x, y);
 
-        double sin = Math.sin(theta - Math.PI/4);
-        double cos = Math.cos(theta - Math.PI/4);
-        double max = Math.max(Math.abs(sin), Math.abs(cos));
 
-        double leftPower = power * cos/max + turn;
-        double rightPower = power * sin/max - turn;
-        double leftBackPower = power * cos/max + turn;
-        double rightBackPower = power * sin/max - turn;
 
-        if((power + Math.abs(turn)) > 1){
-            leftPower /= power + Math.abs(turn);
-            rightPower /= power + Math.abs(turn);
-            leftBackPower /= power + Math.abs(turn);
-            rightBackPower /= power + Math.abs(turn);
+        double leftPower = y + x + turn;
+        double leftBackPower = y - x + turn;
+        double rightPower = y - x - turn;
+        double rightBackPower = y + x - turn;
+
+        double maxPower = Math.max(Math.max(Math.abs(leftPower), Math.abs(leftBackPower)),
+                Math.max(Math.abs(rightPower), Math.abs(rightBackPower)));
+
+        if (maxPower > 1.0) {
+            leftPower /= maxPower;
+            leftBackPower /= maxPower;
+            rightPower /= maxPower;
+            rightBackPower /= maxPower;
         }
-
-       setDrivePower(leftPower, rightPower, leftBackPower, rightBackPower);
-
-//        double leftPower = drive + strafe + turn;
-//        double leftBackPower = drive - strafe + turn;
-//        double rightPower = drive - strafe - turn;
-//        double rightBackPower = drive + strafe - turn;
-//
-//        double maxPower = Math.max(Math.max(Math.abs(leftPower), Math.abs(leftBackPower)),
-//                Math.max(Math.abs(rightPower), Math.abs(rightBackPower)));
-//
-//        if (maxPower > 1.0) {
-//            leftPower /= maxPower;
-//            leftBackPower /= maxPower;
-//            rightPower /= maxPower;
-//            rightBackPower /= maxPower;
-//        }
-//        leftMotor.setPower(leftPower * speedArr[selectedSpeed]);
-//        leftBackMotor.setPower(leftBackPower * speedArr[selectedSpeed]);
-//        rightMotor.setPower(rightPower * speedArr[selectedSpeed]);
-//        rightBackMotor.setPower(rightBackPower * speedArr[selectedSpeed]);
+        setDrivePower(leftPower * speedArr[selectedSpeed],
+                rightPower * speedArr[selectedSpeed],
+                leftBackPower * speedArr[selectedSpeed],
+                rightBackPower * speedArr[selectedSpeed]);
 
     }
 
@@ -124,13 +106,13 @@ public class DriveTrain {
      * @param rightPower The power to be given to the front-right motor.
      * @param leftBackPower The power to be given to the back-left motor.
      * @param rightBackPower The power to be given to the back-right motor.
-     * @see <a href="https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html">Mecanum Guide</a>
+     * @see <a href="https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html">Mecanum Wheel Guide</a>
      */
     public void setDrivePower(double leftPower, double rightPower, double leftBackPower, double rightBackPower){
-        leftMotor.setPower(leftPower * speedArr[selectedSpeed]);
-        leftBackMotor.setPower(leftBackPower * speedArr[selectedSpeed]);
-        rightMotor.setPower(rightPower * speedArr[selectedSpeed]);
-        rightBackMotor.setPower(rightBackPower * speedArr[selectedSpeed]);
+        leftMotor.setPower(leftPower);
+        leftBackMotor.setPower(leftBackPower);
+        rightMotor.setPower(rightPower);
+        rightBackMotor.setPower(rightBackPower);
     }
 
     /**
@@ -138,7 +120,7 @@ public class DriveTrain {
      * @param powers An array of doubles containing four powers to set each motor.
      *               The order in which power is given to the motors is as follows:
      *               Front Left, Front Right, Back Left, Back Right
-     * @see <a href="https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html">Mecanum Guide</a>
+     * @see <a href="https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html">Mecanum Wheel Guide</a>
      */
     public void setDrivePower(double[] powers){
         leftMotor.setPower(powers[0]);
@@ -147,28 +129,28 @@ public class DriveTrain {
         rightBackMotor.setPower(powers[3]);
     }
 
-/*
+
     public void mecanumDrive(double drive, double strafe, double turn) {
-        double leftMotor = drive + strafe + turn;
-        double leftBackMotor = drive - strafe + turn;
+        double leftPower = drive + strafe + turn;
+        double leftBackPower = drive - strafe + turn;
         double frontRightPower = drive - strafe - turn;
         double rearRightPower = drive + strafe - turn;
 
-        double maxPower = Math.max(Math.max(Math.abs(leftMotor), Math.abs(leftBackMotor)),
+        double maxPower = Math.max(Math.max(Math.abs(leftPower), Math.abs(leftBackPower)),
                 Math.max(Math.abs(frontRightPower), Math.abs(rearRightPower)));
 
         if (maxPower > 1.0) {
-            leftMotor /= maxPower;
-            leftBackMotor /= maxPower;
+            leftPower /= maxPower;
+            leftBackPower /= maxPower;
             frontRightPower /= maxPower;
             rearRightPower /= maxPower;
         }
-        leftMotor.setPower(leftMotor * speedArr[selectedSpeed]);
-        leftBackMotor.setPower(leftBackMotor * speedArr[selectedSpeed]);
-        frontRight.setPower(frontRightPower * speedArr[selectedSpeed]);
-        rearRight.setPower(rearRightPower * speedArr[selectedSpeed]);
+        leftMotor.setPower(leftPower * speedArr[selectedSpeed]);
+        leftBackMotor.setPower(leftBackPower * speedArr[selectedSpeed]);
+        rightMotor.setPower(frontRightPower * speedArr[selectedSpeed]);
+        rightBackMotor.setPower(rearRightPower * speedArr[selectedSpeed]);
     }
-*/
+
     public void switchSpeed() {
         if(isSpeedSwitched){ return; }
 
@@ -183,6 +165,11 @@ public class DriveTrain {
         selectedSpeed = x;
     }
 
+    /**
+     * A method using StringBuilder to format a string containing the selected max speed of the robot.
+     * See "Returns:" below for an example of the formatted string
+     * @return |||||||[ ● 20% ]||||||[ ◯ 50% ]||||||[ ◯ 70% ]|||||||
+     */
     public String writeSpeedTelemetry() {
         StringBuilder result = new StringBuilder();
 
