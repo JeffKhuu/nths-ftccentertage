@@ -25,7 +25,7 @@ public class RedAllianceLeft extends LinearOpMode {
         actionExecutor.init();
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");
+        telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
 
 
@@ -39,5 +39,3 @@ public class RedAllianceLeft extends LinearOpMode {
 
     }
 }
-
-

@@ -67,7 +67,7 @@ public class DriveTrain {
 
     /**
      * The method used to move the drive train given three inputs, most likely from a gamepad.
-     * * @param x A Value to dictate the "X" direction of the drive train
+     * @param x A Value to dictate the "X" direction of the drive train
      * @param y A value to dictate the "Y" direction of the drive train
      * @param turn A Value to dictate the rotation of the drive train
      */
@@ -94,8 +94,29 @@ public class DriveTrain {
             rightBackPower /= power + Math.abs(turn);
         }
 
-        setDrivePower(leftPower, rightPower, leftBackPower, rightBackPower);
+       setDrivePower(leftPower, rightPower, leftBackPower, rightBackPower);
+
+//        double leftPower = drive + strafe + turn;
+//        double leftBackPower = drive - strafe + turn;
+//        double rightPower = drive - strafe - turn;
+//        double rightBackPower = drive + strafe - turn;
+//
+//        double maxPower = Math.max(Math.max(Math.abs(leftPower), Math.abs(leftBackPower)),
+//                Math.max(Math.abs(rightPower), Math.abs(rightBackPower)));
+//
+//        if (maxPower > 1.0) {
+//            leftPower /= maxPower;
+//            leftBackPower /= maxPower;
+//            rightPower /= maxPower;
+//            rightBackPower /= maxPower;
+//        }
+//        leftMotor.setPower(leftPower * speedArr[selectedSpeed]);
+//        leftBackMotor.setPower(leftBackPower * speedArr[selectedSpeed]);
+//        rightMotor.setPower(rightPower * speedArr[selectedSpeed]);
+//        rightBackMotor.setPower(rightBackPower * speedArr[selectedSpeed]);
+
     }
+
 
     /**
      * The method used to move the drive train given four powers for each of the motors.
@@ -106,10 +127,10 @@ public class DriveTrain {
      * @see <a href="https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html">Mecanum Guide</a>
      */
     public void setDrivePower(double leftPower, double rightPower, double leftBackPower, double rightBackPower){
-        leftMotor.setPower(leftPower);
-        leftBackMotor.setPower(leftBackPower);
-        rightMotor.setPower(rightPower);
-        rightBackMotor.setPower(rightBackPower);
+        leftMotor.setPower(leftPower * speedArr[selectedSpeed]);
+        leftBackMotor.setPower(leftBackPower * speedArr[selectedSpeed]);
+        rightMotor.setPower(rightPower * speedArr[selectedSpeed]);
+        rightBackMotor.setPower(rightBackPower * speedArr[selectedSpeed]);
     }
 
     /**
@@ -126,6 +147,28 @@ public class DriveTrain {
         rightBackMotor.setPower(powers[3]);
     }
 
+/*
+    public void mecanumDrive(double drive, double strafe, double turn) {
+        double leftMotor = drive + strafe + turn;
+        double leftBackMotor = drive - strafe + turn;
+        double frontRightPower = drive - strafe - turn;
+        double rearRightPower = drive + strafe - turn;
+
+        double maxPower = Math.max(Math.max(Math.abs(leftMotor), Math.abs(leftBackMotor)),
+                Math.max(Math.abs(frontRightPower), Math.abs(rearRightPower)));
+
+        if (maxPower > 1.0) {
+            leftMotor /= maxPower;
+            leftBackMotor /= maxPower;
+            frontRightPower /= maxPower;
+            rearRightPower /= maxPower;
+        }
+        leftMotor.setPower(leftMotor * speedArr[selectedSpeed]);
+        leftBackMotor.setPower(leftBackMotor * speedArr[selectedSpeed]);
+        frontRight.setPower(frontRightPower * speedArr[selectedSpeed]);
+        rearRight.setPower(rearRightPower * speedArr[selectedSpeed]);
+    }
+*/
     public void switchSpeed() {
         if(isSpeedSwitched){ return; }
 
