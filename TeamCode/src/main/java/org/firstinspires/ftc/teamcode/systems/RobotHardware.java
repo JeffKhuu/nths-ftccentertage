@@ -29,15 +29,15 @@ public class RobotHardware {
     }
 
     public void init(){
-        leftHand = opMode.hardwareMap.get(CRServo.class, "leftHand");
-        rightHand = opMode.hardwareMap.get(CRServo.class, "rightHand");
-        leftHand.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightHand.setDirection(CRServo.Direction.REVERSE);
-
-        wristServo = opMode.hardwareMap.get(Servo.class, "wristServo");
-        armMotor = opMode.hardwareMap.get(DcMotor.class, "motorArm");
-        droneServo = opMode.hardwareMap.get(Servo.class, "droneServo");
-        opMode.telemetry.addData(getClass().getName(), "Hardware Initialized");
+//        leftHand = opMode.hardwareMap.get(CRServo.class, "leftHand");
+//        rightHand = opMode.hardwareMap.get(CRServo.class, "rightHand");
+//        leftHand.setDirection(DcMotorSimple.Direction.FORWARD);
+//        rightHand.setDirection(CRServo.Direction.REVERSE);
+//
+//        wristServo = opMode.hardwareMap.get(Servo.class, "wristServo");
+//        armMotor = opMode.hardwareMap.get(DcMotor.class, "motorArm");
+//        droneServo = opMode.hardwareMap.get(Servo.class, "droneServo");
+//        opMode.telemetry.addData(getClass().getName(), "Hardware Initialized");
     }
 
     public void updateTelemetry() {

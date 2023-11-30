@@ -12,12 +12,12 @@ public class manualOpMode extends OpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
     private final DriveTrain driveTrain = new DriveTrain(this);
-    private final RobotHardware robotHardware = new RobotHardware(this);
+   // private final RobotHardware robotHardware = new RobotHardware(this);
 
     @Override
     public void init(){
         driveTrain.init();
-        robotHardware.init();
+        //robotHardware.init();
 
         resetRuntime();
     }
@@ -35,7 +35,7 @@ public class manualOpMode extends OpMode {
          */
         telemetry.addData("Status", "Run Time: " + runtime);
         driveTrain.updateTelemetry(); //Handles DriveTrain telemetry
-        robotHardware.updateTelemetry(); //Handles RobotHardware telemetry
+        //robotHardware.updateTelemetry(); //Handles RobotHardware telemetry
 
     }
     public void stop(){
@@ -100,34 +100,34 @@ public class manualOpMode extends OpMode {
         //  Values: -1 (Pull up) to 1 (Pull down)
         //          Positive Arm Power = Arm Raises
         //          Negative Arm Power = Arm Lowers
-        robotHardware.setArmPower(-gamepad2.right_stick_y * RobotHardware.ARM_UP_POWER);
-
-        if(gamepad2.b){
-            if(robotHardware.getDroneServoPosition() == RobotHardware.DRONE_IDLE){
-                robotHardware.moveDroneServo(RobotHardware.DRONE_LAUNCHED);
-            }else{
-                robotHardware.moveDroneServo(RobotHardware.DRONE_IDLE);
-            }
-        }
-
-        if(gamepad2.dpad_up || gamepad2.left_stick_y == -1){
-            robotHardware.moveWristPosition(-1);
-        }
-        else if(gamepad2.dpad_down || gamepad2.left_stick_y == 1){
-            robotHardware.moveWristPosition(1);
-        }
-
-        if(gamepad2.right_trigger > 0){
-            robotHardware.setHandPower(1);
-            robotHardware.setHandPower(-RobotHardware.OUTTAKE_SPEED);
-        }else{
-            robotHardware.setHandPower(-1);
-        }
-
-        if(gamepad2.y){
-            robotHardware.setHandPower(0);
-            robotHardware.setHandPower(-RobotHardware.INTAKE_SPEED);
-        }
+//        robotHardware.setArmPower(-gamepad2.right_stick_y * RobotHardware.ARM_UP_POWER);
+//
+//        if(gamepad2.b){
+//            if(robotHardware.getDroneServoPosition() == RobotHardware.DRONE_IDLE){
+//                robotHardware.moveDroneServo(RobotHardware.DRONE_LAUNCHED);
+//            }else{
+//                robotHardware.moveDroneServo(RobotHardware.DRONE_IDLE);
+//            }
+//        }
+//
+//        if(gamepad2.dpad_up || gamepad2.left_stick_y == -1){
+//            robotHardware.moveWristPosition(-1);
+//        }
+//        else if(gamepad2.dpad_down || gamepad2.left_stick_y == 1){
+//            robotHardware.moveWristPosition(1);
+//        }
+//
+//        if(gamepad2.right_trigger > 0){
+//            robotHardware.setHandPower(1);
+//            robotHardware.setHandPower(-RobotHardware.OUTTAKE_SPEED);
+//        }else{
+//            robotHardware.setHandPower(-1);
+//        }
+//
+//        if(gamepad2.y){
+//            robotHardware.setHandPower(0);
+//            robotHardware.setHandPower(-RobotHardware.INTAKE_SPEED);
+//        }
     }
 }
 
