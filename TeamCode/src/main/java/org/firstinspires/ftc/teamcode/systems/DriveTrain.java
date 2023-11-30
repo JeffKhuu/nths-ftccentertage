@@ -66,19 +66,41 @@ public class DriveTrain {
         //strafe left-stick-x
         //turn right-stick-x
 
+        // double leftPower = drive + strafe + turn;
+        // double rightPower = drive - strafe - turn
+        // double leftBackPower = drive - strafe + turn;
+        //double rightBackPower = drive + strafe - turn;
+
+
+       // setDrivePower(leftPower, rightPower, leftBackPower, rightBackPower);
+
         double leftPower = drive + strafe + turn;
-        double rightPower = drive - strafe - turn;
         double leftBackPower = drive - strafe + turn;
+        double rightPower = drive - strafe - turn;
         double rightBackPower = drive + strafe - turn;
 
-        setDrivePower(leftPower, rightPower, leftBackPower, rightBackPower);
+        double maxPower = Math.max(Math.max(Math.abs(leftPower), Math.abs(leftBackPower)),
+                Math.max(Math.abs(rightPower), Math.abs(rightBackPower)));
+
+        if (maxPower > 1.0) {
+            leftPower /= maxPower;
+            leftBackPower /= maxPower;
+            rightPower /= maxPower;
+            rightBackPower /= maxPower;
+        }
+        leftMotor.setPower(leftPower * speedArr[selectedSpeed]);
+        leftBackMotor.setPower(leftBackPower * speedArr[selectedSpeed]);
+        rightMotor.setPower(rightPower * speedArr[selectedSpeed]);
+        rightBackMotor.setPower(rightBackPower * speedArr[selectedSpeed]);
+
     }
 
+
     public void setDrivePower(double leftPower, double rightPower, double leftBackPower, double rightBackPower){
-        leftMotor.setPower(leftPower);
-        leftBackMotor.setPower(leftBackPower);
-        rightMotor.setPower(rightPower);
-        rightBackMotor.setPower(rightBackPower);
+        leftMotor.setPower(leftPower * speedArr[selectedSpeed]);
+        leftBackMotor.setPower(leftBackPower * speedArr[selectedSpeed]);
+        rightMotor.setPower(rightPower * speedArr[selectedSpeed]);
+        rightBackMotor.setPower(rightBackPower * speedArr[selectedSpeed]);
     }
 
     public void setDrivePower(double[] motorPower){
@@ -88,6 +110,28 @@ public class DriveTrain {
         rightBackMotor.setPower(motorPower[3]);
     }
 
+/*
+    public void mecanumDrive(double drive, double strafe, double turn) {
+        double leftMotor = drive + strafe + turn;
+        double leftBackMotor = drive - strafe + turn;
+        double frontRightPower = drive - strafe - turn;
+        double rearRightPower = drive + strafe - turn;
+
+        double maxPower = Math.max(Math.max(Math.abs(leftMotor), Math.abs(leftBackMotor)),
+                Math.max(Math.abs(frontRightPower), Math.abs(rearRightPower)));
+
+        if (maxPower > 1.0) {
+            leftMotor /= maxPower;
+            leftBackMotor /= maxPower;
+            frontRightPower /= maxPower;
+            rearRightPower /= maxPower;
+        }
+        leftMotor.setPower(leftMotor * speedArr[selectedSpeed]);
+        leftBackMotor.setPower(leftBackMotor * speedArr[selectedSpeed]);
+        frontRight.setPower(frontRightPower * speedArr[selectedSpeed]);
+        rearRight.setPower(rearRightPower * speedArr[selectedSpeed]);
+    }
+*/
     public void switchSpeed() {
         if(isSpeedSwitched){ return; }
 
