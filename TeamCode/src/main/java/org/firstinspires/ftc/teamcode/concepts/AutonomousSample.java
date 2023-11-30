@@ -33,10 +33,10 @@ public class AutonomousSample extends LinearOpMode {
         actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 1.0, 1.0));
 
         //Turns the robot left for 0.8 seconds
-        actions.add(new RobotPath(-DriveTrain.TURN_SPEED, DriveTrain.TURN_SPEED, -DriveTrain.TURN_SPEED, DriveTrain.TURN_SPEED, 0.8));
+        actions.add(new RobotPath(DriveTrain.SPIN_CW, 0.8));
 
         //Drives the robot forward for 2.0 seconds
-        actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED,2));
+        actions.add(new RobotPath(DriveTrain.FORWARD,2));
 
         waitForStart(); //Wait for start button to be pressed
         actionExecutor.runPaths(actions);

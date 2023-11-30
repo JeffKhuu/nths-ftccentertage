@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.concepts;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -35,19 +33,5 @@ public class GamepadTestOpMode extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
-
-        waitForStart();
-
-        if (isStopRequested()) return;
-
-        while (opModeIsActive()) {
-            logGamepad(telemetry, gamepad1, "gamepad1");
-            logGamepad(telemetry, gamepad2, "gamepad2");
-            telemetry.update();
-
-            sleep(20);
-        }
     }
 }

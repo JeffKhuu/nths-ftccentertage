@@ -23,9 +23,11 @@ public class RobotPath {
     Type type;
     double delay = 0;
 
-    public RobotPath(double leftPower, double rightPower, double leftBackPower, double rightBackPower, double duration){
-        this.leftPower = leftPower;
-        this.rightPower = rightPower;
+    public RobotPath(double[] power, double duration){
+        this.leftPower = power[0];
+        this.rightPower = power[1];
+        this.leftBackPower = power[2];
+        this.rightBackPower = power[3];
 
         this.duration = duration;
         this.type = Type.MOVEMENT;
@@ -39,11 +41,11 @@ public class RobotPath {
         this.type = Type.OPERATION;
     }
 
-    public RobotPath(double leftPower, double rightPower, double leftBackPower, double rightBackPower, double duration, double delay){
-        this.leftPower = leftPower;
-        this.leftBackPower = leftBackPower;
-        this.rightPower = rightPower;
-        this.rightBackPower = rightBackPower;
+    public RobotPath(double[] power, double duration, double delay){
+        this.leftPower = power[0];
+        this.rightPower = power[1];
+        this.leftBackPower = power[2];
+        this.rightBackPower = power[3];
 
         this.duration = duration;
         this.type = Type.MOVEMENT;

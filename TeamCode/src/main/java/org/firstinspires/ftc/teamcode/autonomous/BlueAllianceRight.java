@@ -47,9 +47,9 @@ public class BlueAllianceRight extends LinearOpMode {
         }
 
         //Drive to the backstage
-        actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED,DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, 2));
-        actions.add(new RobotPath(-1, 0, -1, 0, 1));
-        actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, 4));
+        actions.add(new RobotPath(DriveTrain.FORWARD, 2));
+        actions.add(new RobotPath(DriveTrain.SPIN_CCW, 1));
+        actions.add(new RobotPath(DriveTrain.FORWARD, 4));
 
         waitForStart(); //Wait for start button to be pressed
         actionExecutor.runPaths(actions);

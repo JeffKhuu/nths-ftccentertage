@@ -37,15 +37,17 @@ public class BlueAllianceLeft extends LinearOpMode {
 
         //Check where the pixel is
         if(isInRange(pixelPosition, -40, -20)){ //Pixel is to the left
-        }
-        else if(isInRange(pixelPosition, -1, 1)){ //Pixel is centered
+
+        } else if(isInRange(pixelPosition, -1, 1)){ //Pixel is centered
+
         } else if(isInRange(pixelPosition, 20, 40)){ //Pixel is to the right
+
         }
 
 
         //Drive to the backstage
-        actions.add(new RobotPath(-DriveTrain.TURN_SPEED, DriveTrain.TURN_SPEED, -DriveTrain.TURN_SPEED, DriveTrain.TURN_SPEED,  0.8));
-        actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, 2));
+        actions.add(new RobotPath(DriveTrain.SPIN_CCW,  0.8));
+        actions.add(new RobotPath(DriveTrain.FORWARD, 2));
 
         // Step 1:  Spin left for 0.8 seconds
         // Step 2:  Drive forward for 2 Second
