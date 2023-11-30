@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.concepts;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -12,8 +12,9 @@ import org.firstinspires.ftc.teamcode.systems.TensorflowDetector;
 
 import java.util.ArrayList;
 
-@Autonomous(name="Auto: Red Alliance Left", group="Autonomous")
-public class RedAllianceLeft extends LinearOpMode {
+@Disabled
+@Autonomous(name="Auto: AUTONOMOUS SAMPLE OPMODE", group="Autonomous")
+public class AutonomousSample extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
     private final ActionExecutor actionExecutor = new ActionExecutor(this, runtime);
@@ -28,16 +29,17 @@ public class RedAllianceLeft extends LinearOpMode {
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
 
+        //Moves the wrist for 1.0 second, ends with 1.0 second delay
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 1.0, 1.0));
 
-        //Drive to the backstage
-        actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, 2));
-        actions.add(new RobotPath(0, -1, 0, -1, 1));
-        actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, 4));
+        //Turns the robot left for 0.8 seconds
+        actions.add(new RobotPath(-DriveTrain.TURN_SPEED, DriveTrain.TURN_SPEED, -DriveTrain.TURN_SPEED, DriveTrain.TURN_SPEED, 0.8));
+
+        //Drives the robot forward for 2.0 seconds
+        actions.add(new RobotPath(DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED, DriveTrain.FORWARD_SPEED,2));
 
         waitForStart(); //Wait for start button to be pressed
         actionExecutor.runPaths(actions);
 
     }
 }
-
-

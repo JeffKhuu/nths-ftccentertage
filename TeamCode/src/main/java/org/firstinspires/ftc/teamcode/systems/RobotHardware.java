@@ -36,6 +36,7 @@ public class RobotHardware {
 
         wristServo = opMode.hardwareMap.get(Servo.class, "wristServo");
         armMotor = opMode.hardwareMap.get(DcMotor.class, "motorArm");
+        droneServo = opMode.hardwareMap.get(Servo.class, "droneServo");
         opMode.telemetry.addData(getClass().getName(), "Hardware Initialized");
     }
 

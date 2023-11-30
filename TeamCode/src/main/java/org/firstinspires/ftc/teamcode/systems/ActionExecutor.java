@@ -29,15 +29,12 @@ public class ActionExecutor {
 
     public void  runPaths(ArrayList<RobotPath> actions) {
         for(RobotPath action : actions){
+            if(!autoMode.opModeIsActive()){
+                break;
+            }
+
             if(action.type == RobotPath.Type.MOVEMENT){
-                driveTrain.setDrivePower(action.leftPower, action.rightPower);
-                runtime.reset();
-                while ((runtime.seconds() < action.duration) && autoMode.opModeIsActive()) {
-                    autoMode.telemetry.addData("Path", "Leg %d: %4.1f S Elapsed",
-                            actions.indexOf(action), runtime.seconds());
-                    autoMode.telemetry.update();
-                }
-                driveTrain.setDrivePower(0,0);
+                driveTrain.setDrivePower(action.leftPower, action.leftBackPower, action.rightPower,  action.rightBackPower);
             }
 
             if(action.type == RobotPath.Type.OPERATION){
@@ -50,20 +47,19 @@ public class ActionExecutor {
                 else if(action.hardware == RobotPath.UtilizedHardware.INTAKE_SERVO){
                     robotHardware.setHandPower(action.power);
                 }
-
-                runtime.reset();
-                while ((runtime.seconds() < action.duration) && autoMode.opModeIsActive()) {
-                    autoMode.telemetry.addData("Path", "Leg %d: %4.1f S Elapsed",
-                            actions.indexOf(action), runtime.seconds());
-                    autoMode.telemetry.update();
-                }
-                robotHardware.setArmPower(0);
-                robotHardware.setHandPower(0);
             }
 
-            if(action.delay != 0){
+            runtime.reset();
+            while ((runtime.seconds() < action.duration) && autoMode.opModeIsActive()) {
+                autoMode.telemetry.addData("Path", "Leg %d: %4.1f S Elapsed",
+                        actions.indexOf(action), runtime.seconds());
+                autoMode.telemetry.update();
+            }
+            stopAllProcesses();
+
+            if(action.delay > 0){
                 runtime.reset();
-                while ((runtime.seconds() < action.delay)) {
+                while ((runtime.seconds() < action.delay) && autoMode.opModeIsActive()) {
                     autoMode.telemetry.addData("Path", "Leg %d: Delay",
                             actions.indexOf(action));
                     autoMode.telemetry.update();
@@ -73,6 +69,12 @@ public class ActionExecutor {
 
         autoMode.telemetry.addData("Path", "Complete");
         autoMode.telemetry.update();
+    }
+
+    private void stopAllProcesses(){
+        driveTrain.setDrivePower(0,0, 0, 0);
+        robotHardware.setArmPower(0);
+        robotHardware.setHandPower(0);
     }
 
 }

@@ -24,6 +24,26 @@ public class manualOpMode extends OpMode {
 
     @Override
     public void loop() {
+        //Handles the actions of gamepad1
+        handleGamepad1();
+
+        //Handles the actions of gamepad2
+        handleGamepad2();
+
+        /*
+                    TELEMETRY
+         */
+        telemetry.addData("Status", "Run Time: " + runtime);
+        driveTrain.updateTelemetry(); //Handles DriveTrain telemetry
+        robotHardware.updateTelemetry(); //Handles RobotHardware telemetry
+
+    }
+    public void stop(){
+        telemetry.addData("Status", "Stopped");
+    }
+
+
+    private void handleGamepad1(){
         /*
 
                           GAMEPAD ONE CONTROLS
@@ -31,18 +51,44 @@ public class manualOpMode extends OpMode {
                   Left Stick: Drive   Right Stick: Turn
         */
         if(gamepad1.x){
-            driveTrain.switchSpeed(); //Shift the maximum, minimum speeds when X BUTTON IS PRESSED
+            driveTrain.switchSpeed();
         }
+
+        if(!gamepad1.x && driveTrain.isSpeedSwitched){
+            driveTrain.isSpeedSwitched = false;
+        }
+
         if(gamepad1.b){
             driveTrain.setSpeed(0); //Resets to default speed (70%)
         }
 
+        if(gamepad1.dpad_up){
+            driveTrain.setDrivePower(DriveTrain.FORWARD);
+        }
+        else if(gamepad1.dpad_left){
+            driveTrain.setDrivePower(DriveTrain.LEFT);
+        }
+        else if(gamepad1.dpad_right){
+            driveTrain.setDrivePower(DriveTrain.RIGHT);
+        }
+        else if(gamepad1.dpad_down){
+            driveTrain.setDrivePower(DriveTrain.BACKWARD);
+        }
+
+        if(gamepad1.left_bumper){
+            driveTrain.setDrivePower(DriveTrain.SPIN_CCW);
+        }
+        else if(gamepad1.right_bumper){
+            driveTrain.setDrivePower(DriveTrain.SPIN_CW);
+        }
+
         double drive = -gamepad1.left_stick_y; // Values: -1 (Pull up) to 1 (Pull down)
+        double strafe = gamepad1.left_stick_x;
         double turn  =  gamepad1.right_stick_x;
-        driveTrain.move(drive, turn);
+        driveTrain.move(drive, strafe, turn);
+    }
 
-
-
+    private void handleGamepad2(){
         /*
 
                                   GAMEPAD TWO CONTROLS
@@ -72,21 +118,16 @@ public class manualOpMode extends OpMode {
         }
 
         if(gamepad2.right_trigger > 0){
+            robotHardware.setHandPower(1);
             robotHardware.setHandPower(-RobotHardware.OUTTAKE_SPEED);
         }else{
-            robotHardware.setHandPower(-RobotHardware.INTAKE_SPEED);
+            robotHardware.setHandPower(-1);
         }
 
-        /*
-                    TELEMETRY
-         */
-        telemetry.addData("Status", "Run Time: " + runtime);
-        driveTrain.updateTelemetry();
-        robotHardware.updateTelemetry();
-
-    }
-    public void stop(){
-        telemetry.addData("Status", "Stopped");
+        if(gamepad2.y){
+            robotHardware.setHandPower(0);
+            robotHardware.setHandPower(-RobotHardware.INTAKE_SPEED);
+        }
     }
 }
 
