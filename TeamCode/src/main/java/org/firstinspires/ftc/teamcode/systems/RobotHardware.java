@@ -9,16 +9,12 @@ import com.qualcomm.robotcore.util.Range;
 
 public class RobotHardware {
     OpMode opMode;
-    private DcMotor armMotor;
-    private CRServo leftHand;
-    private CRServo rightHand;
-    private Servo wristServo;
-    private Servo droneServo;
+    private Servo armServo;
 
     public static final double WRIST_SPEED     =  0.001 ;
     public static final double INTAKE_SPEED      =  0.2 ;  // sets rate to move servo
     public static final double OUTTAKE_SPEED = 1.0;
-    public static final double ARM_UP_POWER    =  0.75 ;
+    public static final double ARM_UP_POWER    =  0.001 ;
     public static final double INTAKE_SERVO_SPEED = 0.5; // Adjust as needed
 
     public static final double DRONE_IDLE = 1.0;
@@ -29,46 +25,16 @@ public class RobotHardware {
     }
 
     public void init(){
-//        leftHand = opMode.hardwareMap.get(CRServo.class, "leftHand");
-//        rightHand = opMode.hardwareMap.get(CRServo.class, "rightHand");
-//        leftHand.setDirection(DcMotorSimple.Direction.FORWARD);
-//        rightHand.setDirection(CRServo.Direction.REVERSE);
-//
-//        wristServo = opMode.hardwareMap.get(Servo.class, "wristServo");
-//        armMotor = opMode.hardwareMap.get(DcMotor.class, "motorArm");
-//        droneServo = opMode.hardwareMap.get(Servo.class, "droneServo");
-//        opMode.telemetry.addData(getClass().getName(), "Hardware Initialized");
+        armServo = opMode.hardwareMap.get(Servo.class, "armServo");
+        opMode.telemetry.addData(getClass().getName(), "Hardware Initialized");
     }
 
     public void updateTelemetry() {
-        opMode.telemetry.addLine("Robot Hardware")
-                .addData("Hand Power", "Left: %.2f Right: %.2f", leftHand.getPower(), rightHand.getPower())
-                .addData("Wrist Power", wristServo.getPosition());
+        opMode.telemetry.addLine("Robot Hardware");
         opMode.telemetry.addLine();
     }
 
-    public void setArmPower(double power) {
-        armMotor.setPower(Range.clip(power, -1, 1));
-    }
-
-    public void setHandPower(double power) {
-        leftHand.setPower(Range.clip(power, -1, 1));
-        rightHand.setPower(Range.clip(power, -1, 1));
-    }
-
-    public void moveWristPosition(int direction) {
-        wristServo.setPosition(getWristPosition() + (RobotHardware.WRIST_SPEED * direction));
-    }
-
-    public double getWristPosition() {
-        return wristServo.getPosition();
-    }
-
-    public void moveDroneServo(double position){
-        droneServo.setPosition(position);
-    }
-
-    public double getDroneServoPosition(){
-        return(droneServo.getPosition());
+    public void setArmPosition(int direction){
+        armServo.setPosition(armServo.getPosition() + (RobotHardware.ARM_UP_POWER * direction));
     }
 }

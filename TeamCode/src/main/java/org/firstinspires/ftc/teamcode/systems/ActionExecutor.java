@@ -38,15 +38,15 @@ public class ActionExecutor {
             }
 
             if(action.type == RobotPath.Type.OPERATION){
-                if(action.hardware == RobotPath.UtilizedHardware.ARM_MOTOR){
-                    robotHardware.setArmPower(action.power);
-                }
-                else if(action.hardware == RobotPath.UtilizedHardware.WRIST_SERVO){
-                    robotHardware.moveWristPosition((int) Math.round(action.power));
-                }
-                else if(action.hardware == RobotPath.UtilizedHardware.INTAKE_SERVO){
-                    robotHardware.setHandPower(action.power);
-                }
+//                if(action.hardware == RobotPath.UtilizedHardware.ARM_MOTOR){
+//                    robotHardware.setArmPower(action.power);
+//                }
+//                else if(action.hardware == RobotPath.UtilizedHardware.WRIST_SERVO){
+//                    robotHardware.moveWristPosition((int) Math.round(action.power));
+//                }
+//                else if(action.hardware == RobotPath.UtilizedHardware.INTAKE_SERVO){
+//                    robotHardware.setHandPower(action.power);
+//                }
             }
 
             runtime.reset();
@@ -73,8 +73,6 @@ public class ActionExecutor {
 
     private void stopAllProcesses(){
         driveTrain.setDrivePower(0,0, 0, 0);
-        robotHardware.setArmPower(0);
-        robotHardware.setHandPower(0);
     }
 
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous(name="Auto: Blue Alliance Left", group="Autonomous")
-public class BlueAllianceLeft extends LinearOpMode {
+public class BlueAllianceLeft extends LinearOpMode{
 
     private final ElapsedTime runtime = new ElapsedTime();
     private final ActionExecutor actionExecutor = new ActionExecutor(this, runtime);

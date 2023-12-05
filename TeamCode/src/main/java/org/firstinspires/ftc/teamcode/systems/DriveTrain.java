@@ -48,6 +48,7 @@ public class DriveTrain {
         leftBackMotor = opMode.hardwareMap.get(DcMotor.class, "leftBackMotor");
         rightBackMotor = opMode.hardwareMap.get(DcMotor.class, "rightBackMotor");
 
+
         /* Set the directions of each motor so they spin in a consistent manner */
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -57,6 +58,7 @@ public class DriveTrain {
         //Tell the user we are ready
         opMode.telemetry.addData(getClass().getName(), "Initialized");
     }
+
 
     public void updateTelemetry() {
         /* Handles the drive train's telemetry */
@@ -154,10 +156,12 @@ public class DriveTrain {
     public void switchSpeed() {
         if(isSpeedSwitched){ return; }
 
-        selectedSpeed++;
         if (selectedSpeed >= speedArr.length - 1) {
             selectedSpeed = 0;
+        }else{
+            selectedSpeed++;
         }
+
         isSpeedSwitched = true;
     }
 
@@ -167,7 +171,7 @@ public class DriveTrain {
 
     /**
      * A method using StringBuilder to format a string containing the selected max speed of the robot.
-     * See "Returns:" below for an example of the formatted string
+     * See "Returns:" below for an example of the formatted string.
      * @return |||||||[ ● 20% ]||||||[ ◯ 50% ]||||||[ ◯ 70% ]|||||||
      */
     public String writeSpeedTelemetry() {
@@ -188,5 +192,9 @@ public class DriveTrain {
         */
 
         return (result.toString());
+    }
+
+    private boolean areMotorsValid(){
+        return leftMotor == null || rightMotor == null || leftBackMotor == null || rightBackMotor == null;
     }
 }
