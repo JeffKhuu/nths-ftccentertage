@@ -106,12 +106,25 @@ public class manualOpMode extends OpMode {
         //          Positive Arm Power = Arm Raises
         //          Negative Arm Power = Arm Lowers
         if(-gamepad2.right_stick_y == 1 || gamepad2.dpad_up){
-            robotHardware.setArmPosition(1); //Move arm up
+            robotHardware.moveArm(1); //Move arm up
+            telemetry.addData("Arm", "Up");
         }
         else if(-gamepad2.right_stick_y == -1 || gamepad2.dpad_down){
-            robotHardware.setArmPosition(-1); //Move arm down
+            robotHardware.moveArm(-1); //Move arm down
+            telemetry.addData("Arm", "Down");
         }
 
+        if(-gamepad2.left_stick_y == 1){
+            robotHardware.moveWrist(1);
+        }else if(-gamepad2.left_stick_y == -1){
+            robotHardware.moveWrist(-1);
+        }
+
+        if(gamepad2.right_trigger == 1){
+            robotHardware.setRollerServo(1);
+        }else{
+            robotHardware.setRollerServo(-1);
+        }
 
     }
 }

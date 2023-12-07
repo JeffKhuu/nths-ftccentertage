@@ -12,7 +12,7 @@ public class DriveTrain {
     private DcMotor leftBackMotor;
     private DcMotor rightBackMotor;
 
-    private final double[] speedArr = {0.5, 0.2, 1.0}; // 50% speed, 20% speed, 100% speed
+    private final double[] speedArr = {1.0, 0.2}; // 50% speed, 20% speed, 100% speed
     private int selectedSpeed = 0;
     public boolean isSpeedSwitched = false;
 
