@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.systems.RobotHardware;
 public class manualOpMode extends OpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
+    private float hangPower = 0;
     private float handPower;
     private final DriveTrain driveTrain = new DriveTrain(this);
     private final RobotHardware robotHardware = new RobotHardware(this);
@@ -48,7 +49,7 @@ public class manualOpMode extends OpMode {
     }
 
 
-    private void handleGamepad1(){
+    private void handleGamepad1() {
         /*
 
                           GAMEPAD ONE CONTROLS
@@ -56,45 +57,42 @@ public class manualOpMode extends OpMode {
                   Left Stick: Drive   Right Stick: Turn
         */
 
-        if(gamepad1.x){
+        if (gamepad1.x) {
             driveTrain.switchSpeed();
         }
 
-        if(!gamepad1.x && driveTrain.isSpeedSwitched){
+        if (!gamepad1.x && driveTrain.isSpeedSwitched) {
             driveTrain.isSpeedSwitched = false;
         }
 
-        if(gamepad1.b){
+        if (gamepad1.b) {
             driveTrain.setSpeed(0); //Resets to default speed (70%)
         }
 
-        if(gamepad1.dpad_up){
+        if (gamepad1.dpad_up) {
             driveTrain.setDrivePower(DriveTrain.FORWARD);
-        }
-        else if(gamepad1.dpad_left){
+        } else if (gamepad1.dpad_left) {
             driveTrain.setDrivePower(DriveTrain.LEFT);
-        }
-        else if(gamepad1.dpad_right){
+        } else if (gamepad1.dpad_right) {
             driveTrain.setDrivePower(DriveTrain.RIGHT);
-        }
-        else if(gamepad1.dpad_down){
+        } else if (gamepad1.dpad_down) {
             driveTrain.setDrivePower(DriveTrain.BACKWARD);
         }
 
-        if(gamepad1.left_bumper){
+        if (gamepad1.left_bumper) {
             driveTrain.setDrivePower(DriveTrain.SPIN_CCW);
-        }
-        else if(gamepad1.right_bumper){
+        } else if (gamepad1.right_bumper) {
             driveTrain.setDrivePower(DriveTrain.SPIN_CW);
         }
 
         double x = gamepad1.left_stick_x;
         double y = -gamepad1.left_stick_y; // Values: -1 (Pull up) to 1 (Pull down)
-        double turn  =  gamepad1.right_stick_x;
+        double turn = gamepad1.right_stick_x;
         driveTrain.move(x, y, turn);
+
     }
 
-    private void handleGamepad2(){
+    public void handleGamepad2(){
         /*
 
                                   GAMEPAD TWO CONTROLS
@@ -114,7 +112,7 @@ public class manualOpMode extends OpMode {
             robotHardware.moveArm(RobotHardware.ARM_POWER); //Move arm down
             telemetry.addData("Arm", "Down");
         }else {
-            robotHardware.moveArm(0);
+            robotHardware.moveArm(hangPower);
         }
 
         if(-gamepad2.left_stick_y == 1){
@@ -135,8 +133,9 @@ public class manualOpMode extends OpMode {
         if(gamepad2.b){
             if (hangPower == -0.2){
                 hangPower = 0;
+            }else if(hangPower == 0){
+                hangPower = -0.2;
             }
-
         }
     }
 }
