@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.systems.RobotHardware;
 public class manualOpMode extends OpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
-    private float hangPower = 0;
+    private double hangPower = 0;
     private float handPower;
     private final DriveTrain driveTrain = new DriveTrain(this);
     private final RobotHardware robotHardware = new RobotHardware(this);
