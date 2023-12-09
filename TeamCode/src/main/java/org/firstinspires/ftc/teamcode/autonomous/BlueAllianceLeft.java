@@ -31,23 +31,9 @@ public class BlueAllianceLeft extends LinearOpMode{
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
 
-        List<Recognition> recognitions = tfDetector.getRecognitions(); //Get detections from Tensorflow
-        Recognition recognition = recognitions.get(0); //Get the first recognition
-        double pixelPosition = (recognition.getLeft() + recognition.getRight()) / 2 ;
-
-        //Check where the pixel is
-        if(isInRange(pixelPosition, -40, -20)){ //Pixel is to the left
-
-        } else if(isInRange(pixelPosition, -1, 1)){ //Pixel is centered
-
-        } else if(isInRange(pixelPosition, 20, 40)){ //Pixel is to the right
-
-        }
-
 
         //Drive to the backstage
-        actions.add(new RobotPath(DriveTrain.SPIN_CCW,  0.8));
-        actions.add(new RobotPath(DriveTrain.FORWARD, 2));
+        actions.add(new RobotPath(DriveTrain.LEFT,  2));
 
         // Step 1:  Spin left for 0.8 seconds
         // Step 2:  Drive forward for 2 Second

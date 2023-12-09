@@ -30,9 +30,9 @@ public class RedAllianceLeft extends LinearOpMode {
 
 
         //Drive to the backstage
-        actions.add(new RobotPath(DriveTrain.FORWARD, 2));
-        actions.add(new RobotPath(DriveTrain.SPIN_CW, 1));
-        actions.add(new RobotPath(DriveTrain.FORWARD, 4));
+        actions.add(new RobotPath(DriveTrain.RIGHT, 6));
+
+
 
         waitForStart(); //Wait for start button to be pressed
         actionExecutor.runPaths(actions);

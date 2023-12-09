@@ -10,15 +10,17 @@ import com.qualcomm.robotcore.util.Range;
 
 public class RobotHardware {
     OpMode opMode;
-    private Servo armServoLeft;
-    private Servo armServoRight;
+    private DcMotor armMotor;
+
     private Servo wristServo;
     private CRServo rollerServo;
+
+
 
     public static final double WRIST_SPEED     =  0.001 ;
     public static final double INTAKE_SPEED      =  0.2 ;  // sets rate to move servo
     public static final double OUTTAKE_SPEED = 1.0;
-    public static final double ARM_UP_POWER    =  0.001 ;
+    public static final double ARM_POWER    =  0.5 ;
     public static final double INTAKE_SERVO_SPEED = 0.5; // Adjust as needed
 
     public static final double DRONE_IDLE = 1.0;
@@ -29,13 +31,12 @@ public class RobotHardware {
     }
 
     public void init(){
-        armServoLeft = opMode.hardwareMap.get(Servo.class, "armServoLeft");
-        armServoRight = opMode.hardwareMap.get(Servo.class, "armServoRight");
+        armMotor = opMode.hardwareMap.get(DcMotor.class, "armMotor");
         wristServo = opMode.hardwareMap.get(Servo.class, "wristServo");
         rollerServo = opMode.hardwareMap.get(CRServo.class, "rollerServo");
 
-        armServoLeft.setDirection(Servo.Direction.FORWARD);
-        armServoRight.setDirection(Servo.Direction.FORWARD);
+
+
 
         opMode.telemetry.addData(getClass().getName(), "Hardware Initialized");
     }
@@ -45,13 +46,8 @@ public class RobotHardware {
         opMode.telemetry.addLine();
     }
 
-    public void moveArm(int direction){
-        double armLeftPos = armServoLeft.getPosition();
-        double armRightPos = armServoRight.getPosition();
-
-        armServoLeft.setPosition(armLeftPos + (RobotHardware.ARM_UP_POWER * direction));
-        armServoRight.setPosition(armRightPos + (RobotHardware.ARM_UP_POWER) * -direction);
-
+    public void moveArm(double Power){
+        armMotor.setPower(Power);
     }
 
     public void moveWrist(int direction){
@@ -59,7 +55,7 @@ public class RobotHardware {
         wristServo.setPosition(wristPos + (RobotHardware.WRIST_SPEED * direction));
     }
 
-    public void setRollerServo(int power){
+    public void setRollerServo(double power){
         rollerServo.setPower(power);
     }
 }

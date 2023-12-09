@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.systems.RobotHardware;
 public class manualOpMode extends OpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
+    private float handPower;
     private final DriveTrain driveTrain = new DriveTrain(this);
     private final RobotHardware robotHardware = new RobotHardware(this);
     private final BetterGamepad driverGamepad = new BetterGamepad(gamepad1);
@@ -105,13 +106,15 @@ public class manualOpMode extends OpMode {
         //  Values: -1 (Pull up) to 1 (Pull down)
         //          Positive Arm Power = Arm Raises
         //          Negative Arm Power = Arm Lowers
-        if(-gamepad2.right_stick_y == 1 || gamepad2.dpad_up){
-            robotHardware.moveArm(1); //Move arm up
+        if(gamepad2.right_stick_y == 1 || gamepad2.dpad_up){
+            robotHardware.moveArm(-RobotHardware.ARM_POWER); //Move arm up
             telemetry.addData("Arm", "Up");
         }
-        else if(-gamepad2.right_stick_y == -1 || gamepad2.dpad_down){
-            robotHardware.moveArm(-1); //Move arm down
+        else if(gamepad2.right_stick_y == -1 || gamepad2.dpad_down){
+            robotHardware.moveArm(RobotHardware.ARM_POWER); //Move arm down
             telemetry.addData("Arm", "Down");
+        }else {
+            robotHardware.moveArm(0);
         }
 
         if(-gamepad2.left_stick_y == 1){
@@ -121,11 +124,20 @@ public class manualOpMode extends OpMode {
         }
 
         if(gamepad2.right_trigger == 1){
-            robotHardware.setRollerServo(1);
-        }else{
+            robotHardware.setRollerServo(0.4);
+        }else if(gamepad2.left_trigger == 1){
             robotHardware.setRollerServo(-1);
+        }else{
+            robotHardware.setRollerServo(0);
         }
 
+
+        if(gamepad2.b){
+            if (hangPower == -0.2){
+                hangPower = 0;
+            }
+
+        }
     }
 }
 

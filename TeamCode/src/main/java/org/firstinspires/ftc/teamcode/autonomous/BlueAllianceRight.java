@@ -31,25 +31,22 @@ public class BlueAllianceRight extends LinearOpMode {
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
 
-        List<Recognition> recognitions = tfDetector.getRecognitions();
-        Recognition recognition = recognitions.get(0);
-
-        double pixelPosition = (recognition.getLeft() + recognition.getRight()) / 2 ;
-
-        //Check where the pixel is
-        if(isInRange(pixelPosition, -40, -20)){ //Pixel is to the left
-
-        }
-
-        else if(isInRange(pixelPosition, -1, 1)){ //Pixel is centered
-
-        } else if(isInRange(pixelPosition, 20, 40)){ //Pixel is to the right
-        }
+//        List<Recognition> recognitions = tfDetector.getRecognitions();
+//        Recognition recognition = recognitions.get(0);
+//
+//        double pixelPosition = (recognition.getLeft() + recognition.getRight()) / 2 ;
+//        //Check where the pixel is
+//        if(isInRange(pixelPosition, -40, -20)){ //Pixel is to the left
+//
+//        }
+//
+//        else if(isInRange(pixelPosition, -1, 1)){ //Pixel is centered
+//
+//        } else if(isInRange(pixelPosition, 20, 40)){ //Pixel is to the right
+//        }
 
         //Drive to the backstage
-        actions.add(new RobotPath(DriveTrain.FORWARD, 2));
-        actions.add(new RobotPath(DriveTrain.SPIN_CCW, 1));
-        actions.add(new RobotPath(DriveTrain.FORWARD, 4));
+        actions.add(new RobotPath(DriveTrain.LEFT, 6));
 
         waitForStart(); //Wait for start button to be pressed
         actionExecutor.runPaths(actions);
