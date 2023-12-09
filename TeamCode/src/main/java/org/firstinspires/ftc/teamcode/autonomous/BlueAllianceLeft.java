@@ -33,7 +33,7 @@ public class BlueAllianceLeft extends LinearOpMode{
 
 
         //Drive to the backstage
-        actions.add(new RobotPath(DriveTrain.LEFT,  2));
+        actions.add(new RobotPath(DriveTrain.FORWARD,  2));
 
         // Step 1:  Spin left for 0.8 seconds
         // Step 2:  Drive forward for 2 Second
