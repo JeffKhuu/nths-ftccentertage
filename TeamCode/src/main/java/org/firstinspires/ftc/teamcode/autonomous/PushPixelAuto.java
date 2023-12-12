@@ -20,15 +20,14 @@ import java.util.List;
  */
 @Autonomous(name = "Auto: Push Pixel TF", group = "Autonomous")
 public class PushPixelAuto extends LinearOpMode {
-    //Used to gain position from x and y from telemetry of the pixel
-    double XPosition_Pixel = 0;
-    double YPosition_Pixel = 0;
+    //Used to verify confidence of pixel
+    double PixelConfid = 0;
     //variable for within the moving pixel code to only do it once
     boolean ran;
-
-    //(change names of motors when done) Delete this after
     private DcMotor leftDrive;
     private DcMotor rightDrive;
+    private DcMotor leftBackMotor;
+    private DcMotor rightBackMotor;
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
 
@@ -56,10 +55,13 @@ public class PushPixelAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         //Change Name of motor for all (Delete this after)
-        leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
-        rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
+        leftDrive = hardwareMap.get(DcMotor.class, "leftMotor");
+        rightDrive = hardwareMap.get(DcMotor.class, "rightMotor");
+        leftBackMotor = hardwareMap.get(DcMotor.class, "leftBackMotor");
+        rightBackMotor = hardwareMap.get(DcMotor.class, "rightBackMotor");
 
         ran = false;
+
         initTfod();
 
         // Wait for the DS start button to be touched.
@@ -75,61 +77,28 @@ public class PushPixelAuto extends LinearOpMode {
                 telemetry.update();
                 // Save CPU resources; can resume streaming when needed.
                 /*if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                } */
+                 *   visionPortal.stopStreaming();
+                 *} else if (gamepad1.dpad_up) {
+                 *    visionPortal.resumeStreaming();
+                  }*/
                 // Share the CPU.
                 sleep(20);
 
                 //Change the 1s to positions of pixels found
                 if (ran == false) {
-                    if (XPosition_Pixel >= 1 && XPosition_Pixel <= 1 && ran == false) {
-                        leftDrive.setPower(0.6);
-                        rightDrive.setPower(1);
-                        sleep(1150);
-                        leftDrive.setPower(0);
-                        rightDrive.setPower(0);
-                        sleep(200);
-                        leftDrive.setPower(-0.6);
-                        rightDrive.setPower(-1);
-                        sleep(1150);
-                        leftDrive.setPower(0);
-                        rightDrive.setPower(0);
-                        ran = true;
-                    } else if (XPosition_Pixel >= 1 && XPosition_Pixel <= 1 && ran == false) {
-                        leftDrive.setPower(0.6);
-                        rightDrive.setPower(1);
-                        sleep(800);
-                        leftDrive.setPower(1);
-                        rightDrive.setPower(0);
-                        sleep(1050);
-                        leftDrive.setPower(0);
-                        rightDrive.setPower(0);
-                        sleep(200);
-                        leftDrive.setPower(-1);
-                        rightDrive.setPower(0);
-                        sleep(1050);
-                        leftDrive.setPower(-0.6);
-                        rightDrive.setPower(-1);
-                        sleep(800);
-                        leftDrive.setPower(0);
-                        rightDrive.setPower(0);
-                        ran = true;
-                    } else if (XPosition_Pixel >= 1 && XPosition_Pixel <= 1 && ran == false) {
-                        leftDrive.setPower(1);
-                        rightDrive.setPower(1);
-                        sleep(1150);
-                        leftDrive.setPower(0);
-                        rightDrive.setPower(0);
-                        sleep(200);
-                        leftDrive.setPower(-1);
-                        rightDrive.setPower(-1);
-                        sleep(1150);
-                        leftDrive.setPower(0);
-                        rightDrive.setPower(0);
+                    leftBackMotor.setPower(1);
+                    rightBackMotor.setPower(1);
+                    sleep(700);
+                    leftBackMotor.setPower(0);
+                    rightBackMotor.setPower(0); 
+                    UpdateTelemetry();
+                    if (PixelConfid > 0.5) {
+                        leftBackMotor.setPower(1);
+                        rightBackMotor.setPower(1);
+                        sleep(300);
                         ran = true;
                     }
+
                 }
             }
         }
@@ -187,7 +156,7 @@ public class PushPixelAuto extends LinearOpMode {
         // Build the Vision Portal, using the above settings.
         visionPortal = builder.build();
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.75f);
+        tfod.setMinResultConfidence(0.50f);
 
         // Disable or re-enable the TFOD processor at any time.
         visionPortal.setProcessorEnabled(tfod, true);
@@ -207,8 +176,7 @@ public class PushPixelAuto extends LinearOpMode {
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
-            XPosition_Pixel = x;
-            YPosition_Pixel = y;
+            PixelConfid = recognition.getConfidence();
         }   // end for() loop
 
 
@@ -216,6 +184,10 @@ public class PushPixelAuto extends LinearOpMode {
 
     }   // end method telemetryTfod()
 
+    private void UpdateTelemetry() {
+        telemetryTfod();
+        telemetry.update();
+    }
 
 
 
