@@ -2,110 +2,115 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-//import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+
 import java.util.List;
 
-/*
- * This OpMode illustrates the basics of TensorFlow Object Detection,
- * including Java Builder structures for specifying Vision parameters.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
- */
 @Autonomous(name = "Auto: Push Pixel TF", group = "Autonomous")
 public class PushPixelAuto extends LinearOpMode {
-    //Used to verify confidence of pixel
-    double PixelConfid = 0;
-    //variable for within the moving pixel code to only do it once
-    boolean ran;
     private DcMotor leftDrive;
     private DcMotor rightDrive;
     private DcMotor leftBackMotor;
     private DcMotor rightBackMotor;
-    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
+    private static final boolean USE_WEBCAM = true;
 
+    private static final String TFOD_MODEL_ASSET = "CenterStage.tflite";
+    private static final String[] LABELS = {"Pixel"};
 
-    // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
-    // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "CenterStage.tflite"; //not custom, for the pixel
-    // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
-    // this is used when uploading models directly to the RC using the model upload interface.
-    //private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/CenterStage.tflite"; //not custom for the pxiel
-    // Define the labels recognized in the model for TFOD (must be in training order!)
-    private static final String[] LABELS = {
-            "Pixel", //Name
-    };
-
-    /**
-     * The variable to store our instance of the TensorFlow Object Detection processor.
-     */
     private TfodProcessor tfod;
-
-    /**
-     * The variable to store our instance of the vision portal.
-     */
     private VisionPortal visionPortal;
+
+    private static final double BASE_SPEED = 0.5;
+    private static final double CONFIDENCE_THRESHOLD = 0.6;
+    private double PixelConfid = 0;
 
     @Override
     public void runOpMode() {
-        //Change Name of motor for all (Delete this after)
         leftDrive = hardwareMap.get(DcMotor.class, "leftMotor");
         rightDrive = hardwareMap.get(DcMotor.class, "rightMotor");
         leftBackMotor = hardwareMap.get(DcMotor.class, "leftBackMotor");
         rightBackMotor = hardwareMap.get(DcMotor.class, "rightBackMotor");
 
-        ran = false;
-
         initTfod();
 
-        // Wait for the DS start button to be touched.
-        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
-        telemetry.addData(">", "Touch Play to start OpMode");
+        telemetry.addData(">", "Press Play to start OpMode");
         telemetry.update();
         waitForStart();
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 telemetryTfod();
-                // Push telemetry to the Driver Station.
-                telemetry.update();
-                // Save CPU resources; can resume streaming when needed.
-                /*if (gamepad1.dpad_down) {
-                 *   visionPortal.stopStreaming();
-                 *} else if (gamepad1.dpad_up) {
-                 *    visionPortal.resumeStreaming();
-                  }*/
-                // Share the CPU.
-                sleep(20);
+                detectPixel();
 
-                //Change the 1s to positions of pixels found
-                if (ran == false) {
-                    leftBackMotor.setPower(1);
-                    rightBackMotor.setPower(1);
-                    sleep(700);
+                // Example: Move forward for 1 second after detecting the pixel
+                if (PixelConfid > CONFIDENCE_THRESHOLD) {
+                    // Move forward
+                    leftBackMotor.setPower(BASE_SPEED);
+                    rightBackMotor.setPower(BASE_SPEED);
+                    sleep(1000);
+
+                    // Stop the robot
                     leftBackMotor.setPower(0);
-                    rightBackMotor.setPower(0); 
-                    UpdateTelemetry();
-                    if (PixelConfid > 0.5) {
-                        leftBackMotor.setPower(1);
-                        rightBackMotor.setPower(1);
-                        sleep(300);
-                        ran = true;
-                    }
+                    rightBackMotor.setPower(0);
 
+                    // Perform additional actions based on the detected pixel, if needed
+                    // Example: Rotate right for 1 second
+                    leftBackMotor.setPower(BASE_SPEED);
+                    rightBackMotor.setPower(-BASE_SPEED);
+                    sleep(1000);
+
+                    // Stop the robot
+                    leftBackMotor.setPower(0);
+                    rightBackMotor.setPower(0);
+
+                    // Add any other necessary actions based on the pixel detection
+
+                    // Reset PixelConfid to avoid repeated actions until the pixel is detected again
+                    PixelConfid = 0;
                 }
+
+                // Example: Move backward for 1 second if no pixel is detected
+                else {
+                    // Move backward
+                    leftBackMotor.setPower(BASE_SPEED * 2);
+                    rightBackMotor.setPower(BASE_SPEED * 2);
+
+                    leftBackMotor.setPower(-BASE_SPEED);
+                    rightBackMotor.setPower(-BASE_SPEED);
+                    sleep(1000);
+
+                    // Stop the robot
+                    leftBackMotor.setPower(0);
+                    rightBackMotor.setPower(0);
+
+                    // Add any other necessary actions when no pixel is detected
+                }
+
+                // Other code...
+
+                telemetry.update();
             }
         }
 
-        // Save more CPU resources when camera is no longer needed.
         visionPortal.close();
-    }   // end runOpMode()
+    }
+
+    private void detectPixel() {
+        for (Recognition recognition : tfod.getRecognitions()) {
+            if (recognition.getLabel().equals("Pixel") &&
+                    recognition.getConfidence() > CONFIDENCE_THRESHOLD &&
+                    isOnRedOrBlueTape(recognition)) {
+
+                // Update PixelConfid with the confidence of the detected pixel
+                PixelConfid = recognition.getConfidence();
+            }
+        }
+    }
 
     private void initTfod() {
         // Create the TensorFlow processor by using a builder.
@@ -160,38 +165,26 @@ public class PushPixelAuto extends LinearOpMode {
 
         // Disable or re-enable the TFOD processor at any time.
         visionPortal.setProcessorEnabled(tfod, true);
-    }   // end method initTfod()
+    }
 
     private void telemetryTfod() {
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         telemetry.addData("# Objects Detected", currentRecognitions.size());
 
-        // Step through the list of recognitions and display info for each one.
         for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+            double x = (recognition.getLeft() + recognition.getRight()) / 2;
+            double y = (recognition.getTop() + recognition.getBottom()) / 2;
 
-            telemetry.addData(""," ");
             telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-
-            PixelConfid = recognition.getConfidence();
-        }   // end for() loop
-
-
-
-
-    }   // end method telemetryTfod()
-
-    private void UpdateTelemetry() {
-        telemetryTfod();
-        telemetry.update();
+        }
     }
 
-
-
-}   // end class
-
-
-
+    private boolean isOnRedOrBlueTape(Recognition recognition) {
+        // Implement logic to determine if the pixel is on red or blue tape
+        // Modify this method based on your specific scenario
+        // Return true if on red or blue tape, false otherwise
+        return true; // Placeholder, modify accordingly
+    }
+}
