@@ -64,7 +64,7 @@ public class PushPixelAuto extends LinearOpMode {
                 telemetryTfod();
                 detectPixel();
 
-                // Example: Move forward for 1 second after detecting the pixel
+                // ONLY WORKS IF PIKEMARK TO THE LEFT IS CLEAR WITH NO BRAKCET. 
                 if (PixelConfid > CONFIDENCE_THRESHOLD) {
                     // Move forward
                     leftBackMotor.setPower(BASE_SPEED);
