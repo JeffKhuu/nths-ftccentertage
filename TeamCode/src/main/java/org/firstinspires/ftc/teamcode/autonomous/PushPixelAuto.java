@@ -42,6 +42,23 @@ public class PushPixelAuto extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
+        //Moves to the left spikemark to detect
+        leftBackMotor.setPower(BASE_SPEED);
+        rightBackMotor.setPower(-BASE_SPEED);
+        leftDrive.setPower(-BASE_SPEED);
+        rightDrive.setPower(BASE_SPEED);
+        sleep(500);
+
+        //Stops it infront of left spike
+        leftBackMotor.setPower(0);
+        rightBackMotor.setPower(0);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        sleep(20);
+        //detects
+        telemetryTfod();
+        detectPixel();
+
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 telemetryTfod();
@@ -52,7 +69,7 @@ public class PushPixelAuto extends LinearOpMode {
                     // Move forward
                     leftBackMotor.setPower(BASE_SPEED);
                     rightBackMotor.setPower(BASE_SPEED);
-                    sleep(1000);
+                    sleep(400);
 
                     // Stop the robot
                     leftBackMotor.setPower(0);
@@ -60,37 +77,44 @@ public class PushPixelAuto extends LinearOpMode {
 
                     // Perform additional actions based on the detected pixel, if needed
                     // Example: Rotate right for 1 second
-                    leftBackMotor.setPower(BASE_SPEED);
+
+                    /* leftBackMotor.setPower(BASE_SPEED);
                     rightBackMotor.setPower(-BASE_SPEED);
                     sleep(1000);
 
                     // Stop the robot
                     leftBackMotor.setPower(0);
                     rightBackMotor.setPower(0);
+                    */
 
                     // Add any other necessary actions based on the pixel detection
 
                     // Reset PixelConfid to avoid repeated actions until the pixel is detected again
                     PixelConfid = 0;
-                }
 
-                // Example: Move backward for 1 second if no pixel is detected
-                else {
-                    // Move backward
-                    leftBackMotor.setPower(BASE_SPEED * 2);
-                    rightBackMotor.setPower(BASE_SPEED * 2);
+                } else {
 
-                    leftBackMotor.setPower(-BASE_SPEED);
-                    rightBackMotor.setPower(-BASE_SPEED);
-                    sleep(1000);
-
-                    // Stop the robot
+                    // move to the center between spikemarks/middle
+                    leftBackMotor.setPower(-0.5);
+                    rightBackMotor.setPower(0.5);
+                    leftDrive.setPower(0.5);
+                    rightDrive.setPower(-0.5);
+                    sleep(500);
+                    leftDrive.setPower(0);
+                    rightDrive.setPower(0);
                     leftBackMotor.setPower(0);
                     rightBackMotor.setPower(0);
-
+                    sleep(500);
+                    //moves forward
+                    leftBackMotor.setPower(1);
+                    rightBackMotor.setPower(1);
+                    sleep(600);
+                    leftBackMotor.setPower(0);
+                    rightBackMotor.setPower(0);
+                    telemetryTfod();
+                    detectPixel();
                     // Add any other necessary actions when no pixel is detected
-                }
-
+                } 
                 // Other code...
 
                 telemetry.update();
