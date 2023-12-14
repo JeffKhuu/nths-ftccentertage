@@ -95,10 +95,10 @@ public class PushPixelAuto extends LinearOpMode {
                 } else {
 
                     // move to the center between spikemarks/middle
-                    leftBackMotor.setPower(-0.5);
-                    rightBackMotor.setPower(0.5);
-                    leftDrive.setPower(0.5);
-                    rightDrive.setPower(-0.5);
+                    leftBackMotor.setPower(-BASE_SPEED);
+                    rightBackMotor.setPower(BASE_SPEED);
+                    leftDrive.setPower(BASE_SPEED);
+                    rightDrive.setPower(-BASE_SPEED);
                     sleep(500);
                     leftDrive.setPower(0);
                     rightDrive.setPower(0);
@@ -106,9 +106,9 @@ public class PushPixelAuto extends LinearOpMode {
                     rightBackMotor.setPower(0);
                     sleep(500);
                     //moves forward
-                    leftBackMotor.setPower(1);
-                    rightBackMotor.setPower(1);
-                    sleep(600);
+                    leftBackMotor.setPower(BASE_SPEED);
+                    rightBackMotor.setPower(BASE_SPEED);
+                    sleep(800);
                     leftBackMotor.setPower(0);
                     rightBackMotor.setPower(0);
                     telemetryTfod();
