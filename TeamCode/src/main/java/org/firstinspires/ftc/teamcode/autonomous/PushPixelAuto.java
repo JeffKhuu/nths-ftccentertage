@@ -54,7 +54,7 @@ public class PushPixelAuto extends LinearOpMode {
         rightBackMotor.setPower(0);
         leftMotor.setPower(0);
         rightMotor.setPower(0);
-        sleep(20);
+        sleep(10000);
         //detects
         telemetryTfod();
         detectPixel();
