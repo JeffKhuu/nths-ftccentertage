@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.systems.DriveTrain;
@@ -17,8 +16,6 @@ public class manualOpMode extends OpMode {
     private final DriveTrain driveTrain = new DriveTrain(this);
     private final RobotHardware robotHardware = new RobotHardware(this);
     private final BetterGamepad driverGamepad = new BetterGamepad(gamepad1);
-
-
 
     @Override
     public void init(){
@@ -41,7 +38,7 @@ public class manualOpMode extends OpMode {
          */
         telemetry.addData("Status", "Run Time: " + runtime);
         driveTrain.updateTelemetry(); //Handles DriveTrain telemetry
-        //robotHardware.updateTelemetry(); //Handles RobotHardware telemetry
+        robotHardware.updateTelemetry(); //Handles RobotHardware telemetry
 
     }
     public void stop(){
