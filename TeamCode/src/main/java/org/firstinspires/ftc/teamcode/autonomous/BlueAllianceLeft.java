@@ -2,101 +2,70 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.systems.ActionExecutor;
-import org.firstinspires.ftc.teamcode.systems.AutoOpMode;
 import org.firstinspires.ftc.teamcode.systems.DriveTrain;
+import org.firstinspires.ftc.teamcode.systems.RobotHardware;
 import org.firstinspires.ftc.teamcode.systems.RobotPath;
-import org.firstinspires.ftc.teamcode.systems.TensorflowDetector;
 
 import java.util.ArrayList;
 
 @Autonomous(name="Auto: Blue Alliance Left", group="Autonomous")
-public class BlueAllianceLeft extends LinearOpMode implements AutoOpMode  {
+public class BlueAllianceLeft extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
     private final ActionExecutor actionExecutor = new ActionExecutor(this, runtime);
-    private final TensorflowDetector tfDetector = new TensorflowDetector(this);
+    private final RobotHardware robotHardware = new RobotHardware(this);
     private final ArrayList<RobotPath> actions = new ArrayList<>();
 
-    private final double TIME_TO_CHECK = 2.0;
-
-    Side randomizationSide = Side.NONE;
-
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
         actionExecutor.init();
-        TouchSensor touchSensor = hardwareMap.get(TouchSensor.class, "sensorTouch");
+        robotHardware.init();
 
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");
-        telemetry.update();
+        waitForStart();
 
-
-        waitForStart(); //Wait for start button to be pressed
-        actionExecutor.runPath(new RobotPath(DriveTrain.FORWARD, 0.1, 1.0));
-
-        pixelLoop:
-        for(Side side : spikeMarks){
-            runtime.reset();
-            if(side == Side.LEFT){
-                actionExecutor.runPath(new RobotPath(DriveTrain.SPIN_CCW, 0.5, 1.0));
-                actionExecutor.runPath(new RobotPath(DriveTrain.FORWARD, 0.1, 0));
-                while(runtime.seconds() < TIME_TO_CHECK && opModeIsActive()){
-                    if(touchSensor.isPressed()){
-                        randomizationSide = Side.LEFT;
-                        break pixelLoop;
-                    }else{
-                        actionExecutor.runPath(new RobotPath(DriveTrain.BACKWARD, 0.1, 2));
-                        actionExecutor.runPath(new RobotPath(DriveTrain.SPIN_CW, 0.5, 1.0));
-                    }
-                }
-            }
-
-            if(side == Side.CENTER){
-                actionExecutor.runPath(new RobotPath(DriveTrain.FORWARD, 0.1, 0));
-                while(runtime.seconds() < TIME_TO_CHECK && opModeIsActive()){
-                    if(touchSensor.isPressed()){
-                        randomizationSide = Side.LEFT;
-                        break pixelLoop;
-                    }else{
-                        actionExecutor.runPath(new RobotPath(DriveTrain.BACKWARD, 0.1, 2));
-                    }
-                }
-            }
-
-            if(side == Side.RIGHT){
-                actionExecutor.runPath(new RobotPath(DriveTrain.SPIN_CW, 0.5, 1.0));
-                actionExecutor.runPath(new RobotPath(DriveTrain.FORWARD, 0.1, 0));
-                while(runtime.seconds() < TIME_TO_CHECK && opModeIsActive()){
-                    if(touchSensor.isPressed()){
-                        randomizationSide = Side.LEFT;
-                        break pixelLoop;
-                    }else{
-                        actionExecutor.runPath(new RobotPath(DriveTrain.BACKWARD, 0.1, 2));
-                        actionExecutor.runPath(new RobotPath(DriveTrain.SPIN_CCW, 0.5, 1.0));
-                    }
-                }
-            }
-            
-            if(randomizationSide != Side.NONE){
-                telemetry.addData("Auto", "The pixel is " + randomizationSide.toString());
-            }
-
-        }
-
-
-
-
-
-
+        actions.add(new RobotPath(DriveTrain.FORWARD, 1.5));
         actionExecutor.runPaths(actions);
 
-    }
+        if (robotHardware.isTouchSensorTouched()) {
+            actions.add(new RobotPath(DriveTrain.BACKWARD, 1.0));
+            actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
+            actions.add(new RobotPath(DriveTrain.FORWARD, 1.0));
+            actions.add(new RobotPath(DriveTrain.BACKWARD, 3.0));
+            actions.add(new RobotPath(DriveTrain.RIGHT, 2.0));
+            actions.add(new RobotPath(DriveTrain.FORWARD, 3.2));
+            actionExecutor.runPaths(actions);
 
-    private boolean isInRange(double value, int min, int max){
-        return(min < value && value < max);
+        } else {
+            actions.add(new RobotPath(DriveTrain.SPIN_CCW, 0.3));
+            actions.add(new RobotPath(DriveTrain.LEFT, 0.5));
+            actions.add(new RobotPath(DriveTrain.FORWARD, 1.0));
+
+            if (robotHardware.isTouchSensorTouched()) {
+                actions.add(new RobotPath(DriveTrain.BACKWARD, 1.0));
+                actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
+                actions.add(new RobotPath(DriveTrain.FORWARD, 1.0));
+                actions.add(new RobotPath(DriveTrain.BACKWARD, 3.0));
+                actions.add(new RobotPath(DriveTrain.RIGHT, 2.0));
+                actions.add(new RobotPath(DriveTrain.FORWARD, 3.2));
+                actionExecutor.runPaths(actions);
+
+            } else {
+                actions.add(new RobotPath(DriveTrain.SPIN_CCW, 0.9));
+                actions.add(new RobotPath(DriveTrain.FORWARD, 2.0));
+
+                if (robotHardware.isTouchSensorTouched()) {
+                    actions.add(new RobotPath(DriveTrain.BACKWARD, 1.0));
+                    actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
+                    actions.add(new RobotPath(DriveTrain.FORWARD, 1.0));
+                    actions.add(new RobotPath(DriveTrain.BACKWARD, 3.0));
+                    actions.add(new RobotPath(DriveTrain.RIGHT, 2.0));
+                    actions.add(new RobotPath(DriveTrain.FORWARD, 3.2));
+                    actionExecutor.runPaths(actions);
+                }
+            }
+        }
     }
 }
