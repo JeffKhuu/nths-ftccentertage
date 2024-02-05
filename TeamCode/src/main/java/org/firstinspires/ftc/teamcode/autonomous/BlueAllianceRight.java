@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.systems.TensorflowDetector;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name="Auto: Blue Alliance Right", group="Autonomous")
+@Autonomous(name="Auto: Blue Alliance Right Ram Board", group="Autonomous")
 public class BlueAllianceRight extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
@@ -46,8 +46,9 @@ public class BlueAllianceRight extends LinearOpMode {
 //        }
 
         //Drive to the backstage
-        actions.add(new RobotPath(DriveTrain.RIGHT, 1));
-        actions.add(new RobotPath(DriveTrain.FORWARD, 4));
+        actions.add(new RobotPath(DriveTrain.RIGHT, 0.9));
+        actions.add(new RobotPath(DriveTrain.FORWARD, 2.1));
+
 
         waitForStart(); //Wait for start button to be pressed
         actionExecutor.runPaths(actions);

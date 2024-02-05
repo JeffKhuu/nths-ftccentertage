@@ -29,7 +29,7 @@ public class RedAllianceRight extends LinearOpMode {
         telemetry.update();
 
         //Drive to the backstage
-        actions.add(new RobotPath(DriveTrain.RIGHT, 2));
+        actions.add(new RobotPath(DriveTrain.FORWARD,  2));
 
 
         waitForStart(); //Wait for start button to be pressed
