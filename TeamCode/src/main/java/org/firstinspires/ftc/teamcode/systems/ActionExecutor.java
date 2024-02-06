@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.systems;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
@@ -27,7 +26,40 @@ public class ActionExecutor {
         robotHardware.init();
     }
 
-    public void  runPaths(ArrayList<RobotPath> actions) {
+    public void runPath(RobotPath action){
+        if(action.type == RobotPath.Type.MOVEMENT){
+            driveTrain.setDrivePower(action.leftPower, action.leftBackPower, action.rightPower,  action.rightBackPower);
+        }
+
+        if(action.type == RobotPath.Type.OPERATION){
+                if(action.hardware == RobotPath.UtilizedHardware.ARM_MOTOR){
+                    robotHardware.moveArm(action.power);
+                }
+                else if(action.hardware == RobotPath.UtilizedHardware.WRIST_SERVO){
+                    robotHardware.moveWrist((int) Math.round(action.power));
+                }
+                else if(action.hardware == RobotPath.UtilizedHardware.INTAKE_SERVO){
+                    robotHardware.setRollerServo(action.power);
+                }
+        }
+
+        runtime.reset();
+        while ((runtime.seconds() < action.duration) && autoMode.opModeIsActive()) {
+            autoMode.telemetry.addData("Path", "%4.1f S Elapsed", runtime.seconds());
+            autoMode.telemetry.update();
+        }
+        stopAllProcesses();
+
+        if(action.delay > 0){
+            runtime.reset();
+            while ((runtime.seconds() < action.delay) && autoMode.opModeIsActive()) {
+                autoMode.telemetry.addData("Path", "Delay");
+                autoMode.telemetry.update();
+            }
+        }
+    }
+
+    public void runPaths(ArrayList<RobotPath> actions) {
         for(RobotPath action : actions){
             if(!autoMode.opModeIsActive()){
                 break;

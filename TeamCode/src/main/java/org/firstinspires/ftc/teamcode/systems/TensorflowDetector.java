@@ -37,12 +37,14 @@ public class TensorflowDetector {
                 .setIsModelQuantized(true)
                 .setModelInputSize(300)
                 .setModelAspectRatio(16.0 / 9.0)
+
                 .build();
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
         builder.setCamera(opMode.hardwareMap.get(WebcamName.class, "Webcam 1"));
-        builder.setCameraResolution(new Size(640, 480));
+        builder.setCameraResolution(new Size(1280, 720));
         builder.enableLiveView(true);
+        //tfod.setMinResultConfidence(0.30f);
 
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
         builder.addProcessor(tfod);
