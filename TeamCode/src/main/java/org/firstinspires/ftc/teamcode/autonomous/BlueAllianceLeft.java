@@ -32,7 +32,7 @@ public class BlueAllianceLeft extends LinearOpMode {
 
         if (robotHardware.isTouchSensorTouched()) {
             actions.add(new RobotPath(DriveTrain.BACKWARD, 1.0));
-            actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
+            actions.add(new RobotPath(DriveTrain.LEFT, 0.6));
             actions.add(new RobotPath(DriveTrain.SPIN_CCW, 1.3));
             actions.add(new RobotPath(DriveTrain.BACKWARD, 1.4));
             actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 3.0));
