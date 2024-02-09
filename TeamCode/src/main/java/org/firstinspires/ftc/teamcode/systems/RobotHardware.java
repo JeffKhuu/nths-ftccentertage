@@ -81,6 +81,16 @@ public class RobotHardware {
         wristServo.setPosition(wristPos + (RobotHardware.WRIST_SPEED * direction));
     }
 
+    public void setWrist(double position){
+        wristServo.setPosition(position);
+    }
+
+    public double getWristPosition(){
+        return wristServo.getPosition();
+    }
+
+
+
     /**
      * The method used to move the roller on the end of the wrist.
      * @param power Power given to the roller.

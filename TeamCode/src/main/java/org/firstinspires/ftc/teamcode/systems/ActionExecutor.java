@@ -49,7 +49,12 @@ public class ActionExecutor {
                     robotHardware.setArmPower(action.power);
                 }
                 else if(action.hardware == RobotPath.UtilizedHardware.WRIST_SERVO){
-                    robotHardware.moveWrist((int) Math.round(action.power));
+                    if(action.position != 0){
+                        robotHardware.setWrist(action.position);
+                    }else{
+                        robotHardware.moveWrist((int) Math.round(action.power));
+                    }
+
                 }
                 else if(action.hardware == RobotPath.UtilizedHardware.INTAKE_SERVO){
                     robotHardware.setRollerServo(action.power);
@@ -58,7 +63,7 @@ public class ActionExecutor {
 
         //Reset runtime and run code for for the specified duration
         runtime.reset();
-        while ((runtime.seconds() < action.duration) && autoMode.opModeIsActive()) {
+        while (((runtime.seconds() < action.duration)) && autoMode.opModeIsActive() ) {
             autoMode.telemetry.addData("Path", "%4.1f S Elapsed", runtime.seconds());
             autoMode.telemetry.update();
         }

@@ -17,6 +17,7 @@ public class RobotPath {
     double rightBackPower;
 
     double power;
+    double position;
     UtilizedHardware hardware;
 
     double duration;
@@ -38,6 +39,15 @@ public class RobotPath {
         this.power = power;
 
         this.duration = duration;
+        this.type = Type.OPERATION;
+    }
+
+    public RobotPath(double position, double delay){
+        this.hardware = UtilizedHardware.WRIST_SERVO;
+        this.position = position;
+        this.duration = 0;
+        this.delay = delay;
+
         this.type = Type.OPERATION;
     }
 
