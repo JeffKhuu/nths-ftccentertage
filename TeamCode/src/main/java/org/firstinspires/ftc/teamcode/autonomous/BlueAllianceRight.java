@@ -28,6 +28,7 @@ public class BlueAllianceRight extends LinearOpMode {
 
         actions.add(new RobotPath(DriveTrain.FORWARD, 1.5));
         actionExecutor.runPaths(actions);
+        actions.clear();
 
         if (robotHardware.isTouchSensorTouched()) {
             actions.add(new RobotPath(DriveTrain.BACKWARD, 1.0));
