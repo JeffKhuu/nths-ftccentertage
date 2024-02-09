@@ -32,10 +32,15 @@ public class BlueAllianceLeft extends LinearOpMode {
         if (robotHardware.isTouchSensorTouched()) {
             actions.add(new RobotPath(DriveTrain.BACKWARD, 1.0));
             actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
-            actions.add(new RobotPath(DriveTrain.FORWARD, 1.0));
-            actions.add(new RobotPath(DriveTrain.BACKWARD, 3.0));
-            actions.add(new RobotPath(DriveTrain.RIGHT, 2.0));
-            actions.add(new RobotPath(DriveTrain.FORWARD, 3.2));
+            actions.add(new RobotPath(DriveTrain.SPIN_CCW, 1.3));
+            actions.add(new RobotPath(DriveTrain.FORWARD, 1.4));
+            actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 1.0, 0));
+            actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, 1.0, 1.0, 0));
+
+            actions.add(new RobotPath(DriveTrain.BACKWARD, 2.0));
+            actions.add(new RobotPath(DriveTrain.LEFT, 3.2));
+            actions.add(new RobotPath(DriveTrain.SPIN_CCW,1.0));
+
             actionExecutor.runPaths(actions);
 
         } else {
@@ -46,10 +51,14 @@ public class BlueAllianceLeft extends LinearOpMode {
             if (robotHardware.isTouchSensorTouched()) {
                 actions.add(new RobotPath(DriveTrain.BACKWARD, 1.0));
                 actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
-                actions.add(new RobotPath(DriveTrain.FORWARD, 1.0));
+                actions.add(new RobotPath(DriveTrain.SPIN_CW, 1.9));
+                actions.add(new RobotPath(DriveTrain.FORWARD, 0.4));
+
                 actions.add(new RobotPath(DriveTrain.BACKWARD, 3.0));
                 actions.add(new RobotPath(DriveTrain.RIGHT, 2.0));
                 actions.add(new RobotPath(DriveTrain.FORWARD, 3.2));
+                actions.add(new RobotPath(DriveTrain.LEFT,2.0));
+
                 actionExecutor.runPaths(actions);
 
             } else {
