@@ -15,7 +15,6 @@ public class manualOpMode extends OpMode {
     private float handPower;
     private final DriveTrain driveTrain = new DriveTrain(this);
     private final RobotHardware robotHardware = new RobotHardware(this);
-    private final BetterGamepad driverGamepad = new BetterGamepad(gamepad1);
 
     @Override
     public void init(){
@@ -102,14 +101,14 @@ public class manualOpMode extends OpMode {
         //          Positive Arm Power = Arm Raises
         //          Negative Arm Power = Arm Lowers
         if(gamepad2.right_stick_y == 1 || gamepad2.dpad_up){
-            robotHardware.moveArm(-RobotHardware.ARM_POWER); //Move arm up
+            robotHardware.setArmPower(-RobotHardware.ARM_POWER); //Move arm up
             telemetry.addData("Arm", "Up");
         }
         else if(gamepad2.right_stick_y == -1 || gamepad2.dpad_down){
-            robotHardware.moveArm(RobotHardware.ARM_POWER); //Move arm down
+            robotHardware.setArmPower(RobotHardware.ARM_POWER); //Move arm down
             telemetry.addData("Arm", "Down");
         }else {
-            robotHardware.moveArm(hangPower);
+            robotHardware.setArmPower(hangPower);
         }
 
         if(-gamepad2.left_stick_y == 1){

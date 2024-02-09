@@ -26,14 +26,27 @@ public class ActionExecutor {
         robotHardware.init();
     }
 
+    // RUNS A SINGLE RobotPath
+    /*
+        In a RobotPath, you're given:
+            action.type (MOVEMENT / OPERATION)
+            action.hardware (ARM_MOTOR / WRIST_SERVO / INTAKE_SERVO)
+            action.power (A value applied to the utilized hardware)
+
+            action.duration (Time, in seconds, to run the robot path)
+            action.delay (Time, in seconds, to delay until the next robot path)
+     */
     public void runPath(RobotPath action){
+
+        //Handles movement-based actions (uses DriveTrain)
         if(action.type == RobotPath.Type.MOVEMENT){
             driveTrain.setDrivePower(action.leftPower, action.leftBackPower, action.rightPower,  action.rightBackPower);
         }
 
+        //Handles operation-based actions (uses RobotHardware)
         if(action.type == RobotPath.Type.OPERATION){
                 if(action.hardware == RobotPath.UtilizedHardware.ARM_MOTOR){
-                    robotHardware.moveArm(action.power);
+                    robotHardware.setArmPower(action.power);
                 }
                 else if(action.hardware == RobotPath.UtilizedHardware.WRIST_SERVO){
                     robotHardware.moveWrist((int) Math.round(action.power));
@@ -43,13 +56,16 @@ public class ActionExecutor {
                 }
         }
 
+        //Reset runtime and run code for for the specified duration
         runtime.reset();
         while ((runtime.seconds() < action.duration) && autoMode.opModeIsActive()) {
             autoMode.telemetry.addData("Path", "%4.1f S Elapsed", runtime.seconds());
             autoMode.telemetry.update();
         }
-        stopAllProcesses();
 
+        stopAllProcesses(); //Stop all running motors/servos
+
+        //If specified, add a delay until the next action.
         if(action.delay > 0){
             runtime.reset();
             while ((runtime.seconds() < action.delay) && autoMode.opModeIsActive()) {
@@ -59,6 +75,18 @@ public class ActionExecutor {
         }
     }
 
+
+
+    // RUNS A LIST OF RobotPaths
+    /*
+        In a single RobotPath, you're given:
+            action.type (MOVEMENT / OPERATION)
+            action.hardware (ARM_MOTOR / WRIST_SERVO / INTAKE_SERVO)
+            action.power (A value applied to the utilized hardware)
+
+            action.duration (Time, in seconds, to run the robot path)
+            action.delay (Time, in seconds, to delay until the next robot path)
+     */
     public void runPaths(ArrayList<RobotPath> actions) {
         for(RobotPath action : actions){
             if(!autoMode.opModeIsActive()){
@@ -70,15 +98,15 @@ public class ActionExecutor {
             }
 
             if(action.type == RobotPath.Type.OPERATION){
-//                if(action.hardware == RobotPath.UtilizedHardware.ARM_MOTOR){
-//                    robotHardware.setArmPower(action.power);
-//                }
-//                else if(action.hardware == RobotPath.UtilizedHardware.WRIST_SERVO){
-//                    robotHardware.moveWristPosition((int) Math.round(action.power));
-//                }
-//                else if(action.hardware == RobotPath.UtilizedHardware.INTAKE_SERVO){
-//                    robotHardware.setHandPower(action.power);
-//                }
+                if(action.hardware == RobotPath.UtilizedHardware.ARM_MOTOR){
+                    robotHardware.setArmPower(action.power);
+                }
+                else if(action.hardware == RobotPath.UtilizedHardware.WRIST_SERVO){
+                    robotHardware.moveWrist((int) Math.round(action.power));
+                }
+                else if(action.hardware == RobotPath.UtilizedHardware.INTAKE_SERVO){
+                    robotHardware.setRollerServo(action.power);
+                }
             }
 
             runtime.reset();
@@ -105,6 +133,8 @@ public class ActionExecutor {
 
     private void stopAllProcesses(){
         driveTrain.setDrivePower(0,0, 0, 0);
+        robotHardware.setArmPower(0);
+        robotHardware.setRollerServo(0);
     }
 
 }
