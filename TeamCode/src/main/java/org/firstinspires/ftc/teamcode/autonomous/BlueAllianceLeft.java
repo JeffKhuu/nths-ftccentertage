@@ -24,82 +24,19 @@ public class BlueAllianceLeft extends LinearOpMode {
         actionExecutor.init();
         robotHardware.init();
 
-        waitForStart();
-
+        //Drive to the backstage
+        actions.add(new RobotPath(DriveTrain.RIGHT, 0.75));
         actions.add(new RobotPath(DriveTrain.FORWARD, 0.5));
+
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,1.0,5.0));
+        actions.add(new RobotPath(0.4,0));
+
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, 0.5, 5.0));
+        actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,-1.0,5.0));
+        actions.add(new RobotPath(DriveTrain.RIGHT,0.7));
+        actions.add(new RobotPath(DriveTrain.FORWARD, 0.3));
+
+        waitForStart(); //Wait for start button to be pressed
         actionExecutor.runPaths(actions);
-        actions.clear();
-
-        if (robotHardware.isTouchSensorTouched()) {
-            actions.add(new RobotPath(DriveTrain.BACKWARD, 1.0));
-            actions.add(new RobotPath(DriveTrain.LEFT, 0.6));
-            actions.add(new RobotPath(DriveTrain.SPIN_CCW, 1.3));
-            actions.add(new RobotPath(DriveTrain.BACKWARD, 1.4));
-            actions.add(new RobotPath(1,0));
-            actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 1.5, 1.0));
-            actions.add(new RobotPath(-1,0));
-
-            actions.add(new RobotPath(DriveTrain.FORWARD, 0.8));
-            actions.add(new RobotPath(DriveTrain.LEFT, 3.2));
-            actions.add(new RobotPath(DriveTrain.SPIN_CCW,1.0));
-            actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,1.0,5.0));
-            actions.add(new RobotPath(1,0));
-            actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 5.0, 1.0));
-
-
-            actionExecutor.runPaths(actions);
-            actions.clear();
-        } else {
-            actions.add(new RobotPath(DriveTrain.SPIN_CCW, 0.3));
-            actions.add(new RobotPath(DriveTrain.LEFT, 0.5));
-            actions.add(new RobotPath(DriveTrain.FORWARD, 1.0));
-
-            if (robotHardware.isTouchSensorTouched()) {
-                actions.add(new RobotPath(DriveTrain.BACKWARD, 1.0));
-                actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
-                actions.add(new RobotPath(DriveTrain.SPIN_CW, 1.9));
-                actions.add(new RobotPath(DriveTrain.BACKWARD, 0.4));
-                actions.add(new RobotPath(1,0));
-                actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 1.5, 1.0));
-                actions.add(new RobotPath(-1,0));
-                actions.add(new RobotPath(DriveTrain.FORWARD, 1.3));
-                actions.add(new RobotPath(DriveTrain.RIGHT, 2.0));
-                actions.add(new RobotPath(DriveTrain.BACKWARD, 3.2));
-                actions.add(new RobotPath(DriveTrain.LEFT,2.0));
-                actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,1.0,5.0));
-                actions.add(new RobotPath(1,0));
-                actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 5.0, 1.0));
-
-
-                actionExecutor.runPaths(actions);
-                actions.clear();
-
-            } else {
-                actions.add(new RobotPath(DriveTrain.SPIN_CCW, 0.9));
-                actions.add(new RobotPath(DriveTrain.FORWARD, 2.0));
-
-                if (robotHardware.isTouchSensorTouched()) {
-                    actions.add(new RobotPath(DriveTrain.BACKWARD, 1.3));
-                    actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
-                    actions.add(new RobotPath(DriveTrain.SPIN_CW, 1.9));
-                    actions.add(new RobotPath(DriveTrain.BACKWARD, 0.4));
-                    actions.add(new RobotPath(1,0));
-                    actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 1.5, 1.0));
-                    actions.add(new RobotPath(-1,0));
-                    actions.add(new RobotPath(DriveTrain.LEFT, 0.5));
-                    actions.add(new RobotPath(DriveTrain.FORWARD, 3.0));
-
-                    actions.add(new RobotPath(DriveTrain.FORWARD, 3.2));
-                    actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,1.0,5.0));
-                    actions.add(new RobotPath(1,0));
-                    actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 5.0, 1.0));
-
-
-
-                    actionExecutor.runPaths(actions);
-                    actions.clear();
-                }
-            }
-        }
     }
 }
