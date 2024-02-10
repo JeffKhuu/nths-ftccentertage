@@ -14,7 +14,7 @@ public class DriveTrain {
 
     //private final double[] speedArr = {0.69, 0.25}; // 69% speed, 25% speed
 
-    private final double[] speedArr = {1.0};
+    private final double[] speedArr = {0.69, 0.25};
     private int selectedSpeed = 0;
     public boolean isSpeedSwitched = false;
 

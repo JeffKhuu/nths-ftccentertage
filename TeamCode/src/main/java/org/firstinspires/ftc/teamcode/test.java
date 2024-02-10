@@ -1,4 +1,8 @@
+/*
+
 package org.firstinspires.ftc.teamcode;
+
+
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -13,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-@TeleOp(name = "test")
+@TeleOp(name = "rest")
 public class test extends OpMode {
     AprilTagDetector aprilTags = new AprilTagDetector(this);
     TensorflowDetector tensorflowDetector = new TensorflowDetector(this);
@@ -61,3 +65,4 @@ public class test extends OpMode {
 }
 
 
+*/

@@ -118,7 +118,7 @@ public class manualOpMode extends OpMode {
         }
 
         if(gamepad2.right_trigger == 1){
-            robotHardware.setRollerServo(0.4);
+            robotHardware.setRollerServo(0.2);
         }else if(gamepad2.left_trigger == 1){
             robotHardware.setRollerServo(-1);
         }else{

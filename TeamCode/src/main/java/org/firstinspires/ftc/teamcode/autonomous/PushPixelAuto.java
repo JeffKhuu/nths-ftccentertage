@@ -1,3 +1,5 @@
+/*
+
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -13,8 +15,8 @@ import java.util.List;
 
 @Autonomous(name = "Auto: Push Pixel TF", group = "Autonomous")
 public class PushPixelAuto extends LinearOpMode {
-    private DcMotor leftMotor;
-    private DcMotor rightMotor;
+    private DcMotor leftDrive;
+    private DcMotor rightDrive;
     private DcMotor leftBackMotor;
     private DcMotor rightBackMotor;
     private static final boolean USE_WEBCAM = true;
@@ -31,8 +33,8 @@ public class PushPixelAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        leftMotor = hardwareMap.get(DcMotor.class, "leftMotor");
-        rightMotor = hardwareMap.get(DcMotor.class, "rightMotor");
+        leftDrive = hardwareMap.get(DcMotor.class, "leftMotor");
+        rightDrive = hardwareMap.get(DcMotor.class, "rightMotor");
         leftBackMotor = hardwareMap.get(DcMotor.class, "leftBackMotor");
         rightBackMotor = hardwareMap.get(DcMotor.class, "rightBackMotor");
 
@@ -45,15 +47,15 @@ public class PushPixelAuto extends LinearOpMode {
         //Moves to the left spikemark to detect
         leftBackMotor.setPower(BASE_SPEED);
         rightBackMotor.setPower(-BASE_SPEED);
-        leftMotor.setPower(-BASE_SPEED);
-        rightMotor.setPower(BASE_SPEED);
-        sleep(500);
+        leftDrive.setPower(-BASE_SPEED);
+        rightDrive.setPower(BASE_SPEED);
+        sleep(10000);
 
         //Stops it infront of left spike
         leftBackMotor.setPower(0);
         rightBackMotor.setPower(0);
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
         sleep(10000);
         //detects
         telemetryTfod();
@@ -64,7 +66,7 @@ public class PushPixelAuto extends LinearOpMode {
                 telemetryTfod();
                 detectPixel();
 
-                // ONLY WORKS IF PIKEMARK TO THE LEFT IS CLEAR WITH NO BRAKCET.
+                // ONLY WORKS IF PIKEMARK TO THE LEFT IS CLEAR WITH NO BRAKCET. 
                 if (PixelConfid > CONFIDENCE_THRESHOLD) {
                     // Move forward
                     leftBackMotor.setPower(BASE_SPEED);
@@ -90,22 +92,22 @@ public class PushPixelAuto extends LinearOpMode {
                     // Add any other necessary actions based on the pixel detection
 
                     // Reset PixelConfid to avoid repeated actions until the pixel is detected again
-                    PixelConfid = 0;
+ /*                   PixelConfid = 0;
 
                 } else {
 
                     // move to the center between spikemarks/middle
                     leftBackMotor.setPower(-BASE_SPEED);
                     rightBackMotor.setPower(BASE_SPEED);
-                    leftMotor.setPower(BASE_SPEED);
-                    rightMotor.setPower(-BASE_SPEED);
+                    leftDrive.setPower(BASE_SPEED);
+                    rightDrive.setPower(-BASE_SPEED);
                     sleep(500);
-                    leftMotor.setPower(0);
-                    rightMotor.setPower(0);
+                    leftDrive.setPower(0);
+                    rightDrive.setPower(0);
                     leftBackMotor.setPower(0);
                     rightBackMotor.setPower(0);
                     sleep(500);
-                    //moves forward
+                    //moves forwar
                     leftBackMotor.setPower(BASE_SPEED);
                     rightBackMotor.setPower(BASE_SPEED);
                     sleep(800);
@@ -114,7 +116,7 @@ public class PushPixelAuto extends LinearOpMode {
                     telemetryTfod();
                     detectPixel();
                     // Add any other necessary actions when no pixel is detected
-                }
+                } 
                 // Other code...
 
                 telemetry.update();
@@ -212,4 +214,4 @@ public class PushPixelAuto extends LinearOpMode {
         return true; // Placeholder, modify accordingly
     }
 }
-
+*/

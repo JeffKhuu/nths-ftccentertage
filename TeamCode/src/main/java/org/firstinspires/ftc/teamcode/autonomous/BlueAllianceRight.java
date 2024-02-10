@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.systems.RobotPath;
 
 import java.util.ArrayList;
 
-@Autonomous(name="Auto: Blue Alliance Left", group="Autonomous")
+@Autonomous(name="Auto: Blue Alliance Right", group="Autonomous")
 public class BlueAllianceRight extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
@@ -35,15 +35,14 @@ public class BlueAllianceRight extends LinearOpMode {
             actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
             actions.add(new RobotPath(DriveTrain.SPIN_CCW, 1.3));
             actions.add(new RobotPath(DriveTrain.BACKWARD, 1.4));
-            actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 3.0));
+            actions.add(new RobotPath(1,0));
             actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 1.5, 1.0));
-            actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 5.0));
-
+            actions.add(new RobotPath(-1,0));
             actions.add(new RobotPath(DriveTrain.FORWARD, 0.8));
             actions.add(new RobotPath(DriveTrain.RIGHT, 3.2));
             actions.add(new RobotPath(DriveTrain.SPIN_CCW,0.8));
             actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,1.0,5.0));
-            actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 2.0 ));
+            actions.add(new RobotPath(1,0));
             actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 5.0, 1.0));
 
 
@@ -59,16 +58,15 @@ public class BlueAllianceRight extends LinearOpMode {
                 actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
                 actions.add(new RobotPath(DriveTrain.SPIN_CW, 1.9));
                 actions.add(new RobotPath(DriveTrain.BACKWARD, 0.4));
-                actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 3.0));
+                actions.add(new RobotPath(1,0));
                 actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 1.5, 1.0));
-                actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 5.0));
-
+                actions.add(new RobotPath(-1,0));
                 actions.add(new RobotPath(DriveTrain.FORWARD, 0.8));
                 actions.add(new RobotPath(DriveTrain.RIGHT, 2.0));
                 actions.add(new RobotPath(DriveTrain.BACKWARD, 1.2));
                 actions.add(new RobotPath(DriveTrain.LEFT,2.0));
                 actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,1.0,5.0));
-                actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 2.0 ));
+                actions.add(new RobotPath(1,0));
                 actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 5.0, 1.0));
 
 
@@ -84,14 +82,14 @@ public class BlueAllianceRight extends LinearOpMode {
                     actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
                     actions.add(new RobotPath(DriveTrain.SPIN_CW, 1.9));
                     actions.add(new RobotPath(DriveTrain.BACKWARD, 0.4));
-                    actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 3.0));
+                    actions.add(new RobotPath(1,0));
                     actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 1.5, 1.0));
-                    actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 5.0));
+                    actions.add(new RobotPath(-1,0));
                     actions.add(new RobotPath(DriveTrain.LEFT, 0.5));
                     actions.add(new RobotPath(DriveTrain.FORWARD, 3.0));
 
                     actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,1.0,5.0));
-                    actions.add(new RobotPath(RobotPath.UtilizedHardware.WRIST_SERVO, 1.0, 2.0 ));
+                    actions.add(new RobotPath(1,0));
                     actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, -1.0, 5.0, 1.0));
 
 
