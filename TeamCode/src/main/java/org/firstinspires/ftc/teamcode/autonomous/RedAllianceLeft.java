@@ -35,7 +35,7 @@ public class RedAllianceLeft extends LinearOpMode {
         actions.add(new RobotPath(DriveTrain.RIGHT, 0.6));
 
         actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,1.0,5.0));
-        actions.add(new RobotPath(0.4,0));
+        actions.add(new RobotPath(0.6,0));
 
         actions.add(new RobotPath(RobotPath.UtilizedHardware.INTAKE_SERVO, 0.5, 5.0));
         actions.add(new RobotPath(RobotPath.UtilizedHardware.ARM_MOTOR,-1.0,5.0));
