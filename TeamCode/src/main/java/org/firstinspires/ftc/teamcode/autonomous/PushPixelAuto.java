@@ -44,79 +44,13 @@ public class PushPixelAuto extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        //Moves to the left spikemark to detect
-        leftBackMotor.setPower(BASE_SPEED);
-        rightBackMotor.setPower(-BASE_SPEED);
-        leftDrive.setPower(-BASE_SPEED);
-        rightDrive.setPower(BASE_SPEED);
-        sleep(10000);
 
-        //Stops it infront of left spike
-        leftBackMotor.setPower(0);
-        rightBackMotor.setPower(0);
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-        sleep(10000);
-        //detects
-        telemetryTfod();
-        detectPixel();
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 telemetryTfod();
                 detectPixel();
 
-                // ONLY WORKS IF PIKEMARK TO THE LEFT IS CLEAR WITH NO BRAKCET. 
-                if (PixelConfid > CONFIDENCE_THRESHOLD) {
-                    // Move forward
-                    leftBackMotor.setPower(BASE_SPEED);
-                    rightBackMotor.setPower(BASE_SPEED);
-                    sleep(400);
-
-                    // Stop the robot
-                    leftBackMotor.setPower(0);
-                    rightBackMotor.setPower(0);
-
-                    // Perform additional actions based on the detected pixel, if needed
-                    // Example: Rotate right for 1 second
-
-                    /* leftBackMotor.setPower(BASE_SPEED);
-                    rightBackMotor.setPower(-BASE_SPEED);
-                    sleep(1000);
-
-                    // Stop the robot
-                    leftBackMotor.setPower(0);
-                    rightBackMotor.setPower(0);
-                    */
-
-                    // Add any other necessary actions based on the pixel detection
-
-                    // Reset PixelConfid to avoid repeated actions until the pixel is detected again
- /*                   PixelConfid = 0;
-
-                } else {
-
-                    // move to the center between spikemarks/middle
-                    leftBackMotor.setPower(-BASE_SPEED);
-                    rightBackMotor.setPower(BASE_SPEED);
-                    leftDrive.setPower(BASE_SPEED);
-                    rightDrive.setPower(-BASE_SPEED);
-                    sleep(500);
-                    leftDrive.setPower(0);
-                    rightDrive.setPower(0);
-                    leftBackMotor.setPower(0);
-                    rightBackMotor.setPower(0);
-                    sleep(500);
-                    //moves forwar
-                    leftBackMotor.setPower(BASE_SPEED);
-                    rightBackMotor.setPower(BASE_SPEED);
-                    sleep(800);
-                    leftBackMotor.setPower(0);
-                    rightBackMotor.setPower(0);
-                    telemetryTfod();
-                    detectPixel();
-                    // Add any other necessary actions when no pixel is detected
-                } 
                 // Other code...
 
                 telemetry.update();
