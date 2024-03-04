@@ -6,29 +6,41 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.ArrayList;
 
 public class ActionExecutor {
-    LinearOpMode autoMode;
+    private static volatile ActionExecutor instance;
+    private final LinearOpMode autoMode;
+
     private final ElapsedTime runtime;
 
     DriveTrain driveTrain;
     RobotHardware robotHardware;
 
 
-    public ActionExecutor(LinearOpMode opMode, ElapsedTime runtime){
+    //Initialize a singleton instance to prevent multiple coexisting
+    public static ActionExecutor getInstance(LinearOpMode opMode, ElapsedTime runtime) {
+        ActionExecutor result = instance; //Create local variable to prevent accessing a volatile variable more than necessary
+        if(result == null){
+            synchronized (ActionExecutor.class){ //Use double-check locking to ensure another thread does not create another instance
+                result = instance;
+                if(result == null){
+                    instance = result = new ActionExecutor(opMode, runtime); //Set both the local variable and global Singleton to new instance of DriveTrain
+                }
+            }
+        }
+        return result;
+    }
+    private ActionExecutor(LinearOpMode opMode, ElapsedTime runtime){
         this.autoMode = opMode;
         this.runtime = runtime;
+        init();
     }
 
-    public void init(){
-        driveTrain = new DriveTrain(autoMode);
-        robotHardware = new RobotHardware(autoMode);
-
-        driveTrain.init();
-        robotHardware.init();
+    private void init(){
+        driveTrain = DriveTrain.getInstance(autoMode);
+        robotHardware = RobotHardware.getInstance(autoMode);
     }
 
-    // RUNS A SINGLE RobotPath
-    /*
-        In a RobotPath, you're given:
+    /** RUNS A SINGLE RobotPath
+        In a RobotPath, you can be given:
             action.type (MOVEMENT / OPERATION)
             action.hardware (ARM_MOTOR / WRIST_SERVO / INTAKE_SERVO)
             action.power (A value applied to the utilized hardware)
@@ -82,8 +94,8 @@ public class ActionExecutor {
 
 
 
-    // RUNS A LIST OF RobotPaths
-    /*
+    /** RUNS A LIST OF RobotPaths
+     *
         In a single RobotPath, you're given:
             action.type (MOVEMENT / OPERATION)
             action.hardware (ARM_MOTOR / WRIST_SERVO / INTAKE_SERVO)

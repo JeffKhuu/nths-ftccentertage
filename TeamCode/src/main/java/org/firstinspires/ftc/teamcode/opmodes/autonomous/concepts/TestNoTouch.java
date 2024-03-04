@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.opmodes.autonomous.concepts;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.systems.ActionExecutor;
 import org.firstinspires.ftc.teamcode.systems.DriveTrain;
-import org.firstinspires.ftc.teamcode.systems.RobotHardware;
 import org.firstinspires.ftc.teamcode.systems.RobotPath;
 
 import java.util.ArrayList;
@@ -15,19 +14,14 @@ import java.util.ArrayList;
 public class TestNoTouch extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
-    private final ActionExecutor actionExecutor = new ActionExecutor(this, runtime);
-    private final RobotHardware robotHardware = new RobotHardware(this);
+    private final ActionExecutor actionExecutor = ActionExecutor.getInstance(this, runtime);
     private final ArrayList<RobotPath> actions = new ArrayList<>();
 
     @Override
     public void runOpMode() {
-        actionExecutor.init();
-        robotHardware.init();
-
         waitForStart();
 
         actions.add(new RobotPath(DriveTrain.FORWARD, 0.8));
-
 
         actions.add(new RobotPath(DriveTrain.BACKWARD, 0.5));
         actions.add(new RobotPath(DriveTrain.RIGHT, 0.2));

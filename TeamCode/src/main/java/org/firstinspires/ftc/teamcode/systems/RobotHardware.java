@@ -7,7 +7,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class RobotHardware {
+    private static volatile RobotHardware instance;
     private final OpMode opMode;
+
     private DcMotor armMotor;
     private Servo wristServo;
     private CRServo rollerServo;
@@ -33,12 +35,31 @@ public class RobotHardware {
     /** Constant for the state of the touch sensor. */
     private boolean isTouchSensorTouched;
 
-    public RobotHardware(OpMode opmode) {
-        opMode = opmode;
+    /**Variable representing the current power constantly applied to the hang power. */
+    public double currentHangPower = 0;
 
+    /** Constant power applied to a motor in order for it to hang. */
+    public double HANG_POWER = -0.2;
+
+    //Initialize a singleton instance to prevent multiple coexisting
+    public static RobotHardware getInstance(OpMode opMode) {
+        RobotHardware result = instance; //Create local variable to prevent accessing a volatile variable more than necessary
+        if(result == null){
+            synchronized (RobotHardware.class){ //Use double-check locking to ensure another thread does not create another instance
+                result = instance;
+                if(result == null){
+                    instance = result = new RobotHardware(opMode); //Set both the local variable and global Singleton to new instance of DriveTrain
+                }
+            }
+        }
+        return result;
+    }
+    private RobotHardware(OpMode opmode) {
+        opMode = opmode;
+        init();
     }
 
-    public void init() {
+    private void init() {
 
         armMotor = opMode.hardwareMap.get(DcMotor.class, "armMotor");
         wristServo = opMode.hardwareMap.get(Servo.class, "wristServo");
@@ -58,8 +79,7 @@ public class RobotHardware {
     }
 
     public boolean isTouchSensorTouched() {
-        isTouchSensorTouched = touchSensor.isPressed();
-        return isTouchSensorTouched;
+        return touchSensor.isPressed();
     }
 
     /**
@@ -81,15 +101,21 @@ public class RobotHardware {
         wristServo.setPosition(wristPos + (RobotHardware.WRIST_SPEED * direction));
     }
 
+    /**
+     * The method used to set the position of the wrist servo.
+     * @param position End position for the servo (-1.0 - 1.0)
+     */
     public void setWrist(double position){
         wristServo.setPosition(position);
     }
 
+    /**
+     * The method used to return the current position of the wrist servo.
+     * @return Returns a double containing the position of the servo (-1.0 - 1.0)
+     */
     public double getWristPosition(){
         return wristServo.getPosition();
     }
-
-
 
     /**
      * The method used to move the roller on the end of the wrist.

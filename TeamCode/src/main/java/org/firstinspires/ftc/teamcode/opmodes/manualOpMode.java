@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -11,16 +11,12 @@ import org.firstinspires.ftc.teamcode.systems.RobotHardware;
 public class manualOpMode extends OpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
-    private double hangPower = 0;
-    private float handPower;
-    private final DriveTrain driveTrain = new DriveTrain(this);
-    private final RobotHardware robotHardware = new RobotHardware(this);
+    private final DriveTrain driveTrain = DriveTrain.getInstance(this);
+    private final RobotHardware robotHardware = RobotHardware.getInstance(this);
 
     @Override
     public void init(){
-        driveTrain.init();
-        robotHardware.init();
-
+        robotHardware.setWrist(0);
         resetRuntime();
     }
 
@@ -47,7 +43,6 @@ public class manualOpMode extends OpMode {
 
     private void handleGamepad1() {
         /*
-
                           GAMEPAD ONE CONTROLS
                   X: Switch Speeds   B: Reset Speed to 70%
                   Left Stick: Drive   Right Stick: Turn
@@ -96,10 +91,12 @@ public class manualOpMode extends OpMode {
                   Left Stick: Arm              Right Stick/D-Pad Up & Down: Wrist
         */
 
-        //sets the DC arm motor power, very important for the arm to function
-        //  Values: -1 (Pull up) to 1 (Pull down)
-        //          Positive Arm Power = Arm Raises
-        //          Negative Arm Power = Arm Lowers
+
+        /*sets the DC arm motor power, very important for the arm to function
+              Values: -1 (Pull up) to 1 (Pull down)
+                  Positive Arm Power = Arm Raises
+                  Negative Arm Power = Arm Lowers
+         */
         if(gamepad2.right_stick_y == 1 || gamepad2.dpad_up){
             robotHardware.setArmPower(-RobotHardware.ARM_POWER); //Move arm up
             telemetry.addData("Arm", "Up");
@@ -108,7 +105,7 @@ public class manualOpMode extends OpMode {
             robotHardware.setArmPower(RobotHardware.ARM_POWER); //Move arm down
             telemetry.addData("Arm", "Down");
         }else {
-            robotHardware.setArmPower(hangPower);
+            robotHardware.setArmPower(robotHardware.currentHangPower);
         }
 
         if(-gamepad2.left_stick_y == 1){
@@ -127,11 +124,10 @@ public class manualOpMode extends OpMode {
 
 
         if(gamepad2.b){
-            if (hangPower == -0.2){
-                hangPower = 0;
-            }else if(hangPower == 0){
-                hangPower = -0.2;
-            }
+            robotHardware.currentHangPower =
+                    /*If*/ (robotHardware.currentHangPower != robotHardware.HANG_POWER)
+                    ? robotHardware.HANG_POWER // If true^: then set to hang power
+                    : 0; //Else: set to 0
         }
     }
 }

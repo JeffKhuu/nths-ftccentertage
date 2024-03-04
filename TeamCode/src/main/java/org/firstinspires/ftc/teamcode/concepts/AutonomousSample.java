@@ -17,14 +17,12 @@ import java.util.ArrayList;
 public class AutonomousSample extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
-    private final ActionExecutor actionExecutor = new ActionExecutor(this, runtime);
+    private final ActionExecutor actionExecutor = ActionExecutor.getInstance(this, runtime);
     private final TensorflowDetector tfDetector = new TensorflowDetector(this);
     private final ArrayList<RobotPath> actions = new ArrayList<>();
 
     @Override
     public void runOpMode(){
-        actionExecutor.init();
-
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");
         telemetry.update();

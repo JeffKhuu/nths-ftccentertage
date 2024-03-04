@@ -4,7 +4,6 @@ public class RobotPath {
         MOVEMENT,
         OPERATION
     }
-
     public enum UtilizedHardware {
         ARM_MOTOR,
         WRIST_SERVO,

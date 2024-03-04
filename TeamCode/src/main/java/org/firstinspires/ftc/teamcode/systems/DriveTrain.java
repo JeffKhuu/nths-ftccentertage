@@ -6,13 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import java.util.Locale;
 
 public class DriveTrain {
+    private static volatile DriveTrain instance;
     private final OpMode opMode;
+
     private DcMotor leftMotor;
     private DcMotor rightMotor;
     private DcMotor leftBackMotor;
     private DcMotor rightBackMotor;
-
-    //private final double[] speedArr = {0.69, 0.25}; // 69% speed, 25% speed
 
     private final double[] speedArr = {0.69, 0.25};
     private int selectedSpeed = 0;
@@ -39,11 +39,27 @@ public class DriveTrain {
     /** The constant variable storing an array with the four motor powers to spin the robot counter-clockwise. */
     public static final double[] SPIN_CCW = {-TURN_SPEED, TURN_SPEED, -TURN_SPEED, TURN_SPEED};
 
-    public DriveTrain(OpMode opMode) {
+    //Initialize a singleton instance of DriveTrain to prevent multiple DriveTrains coexisting
+    public static DriveTrain getInstance(OpMode opMode) {
+        DriveTrain result = instance; //Create local variable to prevent accessing a volatile variable more than necessary
+        if(result == null){
+            synchronized (DriveTrain.class){ //Use double-check locking to ensure another thread does not create another instance
+                result = instance;
+                if(result == null){
+                    instance = result = new DriveTrain(opMode); //Set both the local variable and global Singleton to new instance of DriveTrain
+                }
+            }
+        }
+
+        return result;
+    }
+    
+    private DriveTrain(OpMode opMode) {
         this.opMode = opMode;
+        init();
     }
 
-    public void init() {
+    private void init() {
         /* Get each drive train motor from the hardware map */
         leftMotor = opMode.hardwareMap.get(DcMotor.class, "leftMotor");
         rightMotor = opMode.hardwareMap.get(DcMotor.class, "rightMotor");
@@ -133,28 +149,6 @@ public class DriveTrain {
         rightBackMotor.setPower(powers[3]);
     }
 
-
-    public void mecanumDrive(double drive, double strafe, double turn) {
-        double leftPower = drive + strafe + turn;
-        double leftBackPower = drive - strafe + turn;
-        double frontRightPower = drive - strafe - turn;
-        double rearRightPower = drive + strafe - turn;
-
-        double maxPower = Math.max(Math.max(Math.abs(leftPower), Math.abs(leftBackPower)),
-                Math.max(Math.abs(frontRightPower), Math.abs(rearRightPower)));
-
-        if (maxPower > 1.0) {
-            leftPower /= maxPower;
-            leftBackPower /= maxPower;
-            frontRightPower /= maxPower;
-            rearRightPower /= maxPower;
-        }
-        leftMotor.setPower(leftPower * speedArr[selectedSpeed]);
-        leftBackMotor.setPower(leftBackPower * speedArr[selectedSpeed]);
-        rightMotor.setPower(frontRightPower * speedArr[selectedSpeed]);
-        rightBackMotor.setPower(rearRightPower * speedArr[selectedSpeed]);
-    }
-
     public void switchSpeed() {
         if(isSpeedSwitched){ return; }
 
@@ -194,9 +188,5 @@ public class DriveTrain {
         */
 
         return (result.toString());
-    }
-
-    private boolean areMotorsValid(){
-        return leftMotor == null || rightMotor == null || leftBackMotor == null || rightBackMotor == null;
     }
 }
